@@ -1,5 +1,10 @@
 # 充电列表
 
+- [获取空间充电公示列表](#获取空间充电公示列表)
+- [获取视频充电鸣谢名单](#获取视频充电鸣谢名单)
+
+---
+
 ## 获取空间充电公示列表
 
 > http://elec.bilibili.com/api/query.rank.do 
@@ -68,9 +73,12 @@
 查询用户`UID=53456`的充电公示列表
 
 ```shell
-curl -G 'http://elec.bilibili.com/api/query.rank.do'\
+curl -G 'http://elec.bilibili.com/api/query.rank.do' \
 --data-urlencode 'mid=53456'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -132,6 +140,8 @@ curl -G 'http://elec.bilibili.com/api/query.rank.do'\
 }
 ```
 
+</details>
+
 ## 获取视频充电鸣谢名单
 
 > http://api.bilibili.com/x/web-interface/elec/show 
@@ -143,8 +153,8 @@ curl -G 'http://elec.bilibili.com/api/query.rank.do'\
 | 参数名 | 类型 | 内容         | 必要性       | 备注               |
 | ------ | ---- | ------------ | ------------ | ------------------ |
 | mid    | num  | 目标用户UID  | 必要         |                    |
-| aid    | num  | 目标视频avID | 必要（可选） | avID与bvID任选一个 |
-| bvid   | str  | 目标视频bvID | 必要（可选） | avID与bvID任选一个 |
+| aid    | num  | 目标稿件avID | 必要（可选） | avID与bvID任选一个 |
+| bvid   | str  | 目标稿件bvID | 必要（可选） | avID与bvID任选一个 |
 
 **json回复：**
 
@@ -215,18 +225,21 @@ curl -G 'http://elec.bilibili.com/api/query.rank.do'\
 avID方式：
 
 ```shell
-curl -G 'http://api.bilibili.com/x/web-interface/elec/show'\
---data-urlencode 'mid=53456'\
+curl -G 'http://api.bilibili.com/x/web-interface/elec/show' \
+--data-urlencode 'mid=53456' \
 --data-urlencode 'aid=967773538'
 ```
 
 bvID方式：
 
 ```shell
-curl -G 'http://api.bilibili.com/x/web-interface/elec/show'\
---data-urlencode 'mid=53456'\
+curl -G 'http://api.bilibili.com/x/web-interface/elec/show' \
+--data-urlencode 'mid=53456' \
 --data-urlencode 'bvid=BV1up4y1y77i '
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -357,3 +370,4 @@ curl -G 'http://api.bilibili.com/x/web-interface/elec/show'\
 }
 ```
 
+</details>

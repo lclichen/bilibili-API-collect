@@ -1,6 +1,9 @@
 # 私信
 
-**本页所有操作均需登录（SESSDATA）**
+- [未读私信数](#未读私信数)
+- [发送私信（web端）](#发送私信（web端）)
+
+---
 
 ## 未读私信数
 
@@ -34,9 +37,12 @@
 以下信息代表了为未关注用户未读私信数为`10`条，已关注用户未读私信数为`3`条
 
 ```shell
-curl 'http://api.vc.bilibili.com/session_svr/v1/session_svr/single_unread'\
+curl 'http://api.vc.bilibili.com/session_svr/v1/session_svr/single_unread' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -50,6 +56,8 @@ curl 'http://api.vc.bilibili.com/session_svr/v1/session_svr/single_unread'\
 	}
 }
 ```
+
+</details>
 
 ## 发送私信（web端）
 
@@ -128,15 +136,18 @@ curl 'http://api.vc.bilibili.com/session_svr/v1/session_svr/single_unread'\
 > 催更[doge]
 
 ```shell
-curl 'http://api.vc.bilibili.com/web_im/v1/web_im/send_msg'\
---data-urlencode 'msg[sender_uid]=293793435'\
---data-urlencode 'msg[receiver_id]=1'\
---data-urlencode 'msg[receiver_type] =1'\
---data-urlencode 'msg[msg_type]=1'\
---data-urlencode 'msg[content]={"content":"up主你好，\n催更[doge]"}'\
---data-urlencode 'csrf_token=xxx'\
+curl 'http://api.vc.bilibili.com/web_im/v1/web_im/send_msg' \
+--data-urlencode 'msg[sender_uid]=293793435' \
+--data-urlencode 'msg[receiver_id]=1' \
+--data-urlencode 'msg[receiver_type] =1' \
+--data-urlencode 'msg[msg_type]=1' \
+--data-urlencode 'msg[content]={"content":"up主你好，\n催更[doge]"}' \
+--data-urlencode 'csrf_token=xxx' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -150,20 +161,25 @@ curl 'http://api.vc.bilibili.com/web_im/v1/web_im/send_msg'\
 }
 ```
 
+</details>
+
 给目标用户`UID=1`发一条图片私信：
 
 > <img src="https://i1.hdslb.com/bfs/face/aebb2639a0d47f2ce1fec0631f412eaf53d4a0be.jpg" style="zoom:50%;" >
 
 ```shell
-curl 'http://api.vc.bilibili.com/web_im/v1/web_im/send_msg'\
---data-urlencode 'msg[sender_uid]=293793435'\
---data-urlencode 'msg[receiver_id]=1'\
---data-urlencode 'msg[receiver_type] =1'\
---data-urlencode 'msg[msg_type]=2'\
---data-urlencode 'msg[content]={"url":https://i1.hdslb.com/bfs/face/aebb2639a0d47f2ce1fec0631f412eaf53d4a0be.jpg}'\
---data-urlencode 'csrf_token=xxx'\
+curl 'http://api.vc.bilibili.com/web_im/v1/web_im/send_msg' \
+--data-urlencode 'msg[sender_uid]=293793435' \
+--data-urlencode 'msg[receiver_id]=1' \
+--data-urlencode 'msg[receiver_type] =1' \
+--data-urlencode 'msg[msg_type]=2' \
+--data-urlencode 'msg[content]={"url":https://i1.hdslb.com/bfs/face/aebb2639a0d47f2ce1fec0631f412eaf53d4a0be.jpg}' \
+--data-urlencode 'csrf_token=xxx' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -177,3 +193,4 @@ curl 'http://api.vc.bilibili.com/web_im/v1/web_im/send_msg'\
 }
 ```
 
+</details>

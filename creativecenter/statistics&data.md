@@ -1,6 +1,14 @@
 # 统计与数据
 
-本页所有操作均需登录（Cookie）
+- [UP主视频状态数据](#UP主视频状态数据)
+- [UP主专栏状态数据](#UP主专栏状态数据)
+- [视频数据增量趋势](#视频数据增量趋势)
+- [专栏数据增量趋势](#专栏数据增量趋势)
+- [稿件操作来源占比情况](#稿件操作来源占比情况)
+- [播放来源占比情况（平台及方式）](#播放来源占比情况（平台及方式）)
+- [播放分布情况（粉丝与路人）](#播放分布情况（粉丝与路人）)
+
+---
 
 统计与数据次日中午12刷新
 
@@ -71,9 +79,12 @@
 **示例：**
 
 ```shell
-curl 'http://member.bilibili.com/x/web/index/stat'\
+curl 'http://member.bilibili.com/x/web/index/stat' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -159,6 +170,8 @@ curl 'http://member.bilibili.com/x/web/index/stat'\
 }
 ```
 
+</details>
+
 ## UP主专栏状态数据
 
 > http://member.bilibili.com/x/web/data/article
@@ -198,9 +211,12 @@ curl 'http://member.bilibili.com/x/web/index/stat'\
 **示例：**
 
 ```shell
-curl 'http://member.bilibili.com/x/web/data/article'\
+curl 'http://member.bilibili.com/x/web/data/article' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -223,6 +239,8 @@ curl 'http://member.bilibili.com/x/web/data/article'\
 	}
 }
 ```
+
+</details>
 
 ## 视频数据增量趋势
 
@@ -285,10 +303,13 @@ curl 'http://member.bilibili.com/x/web/data/article'\
 查询30天前的视频播放增量趋势，可知`2020-04-05`的播放增量为`46`，`2020-04-04`的播放增量为`58`
 
 ```shell
-curl -G 'http://member.bilibili.com/x/web/data/pandect'\
---data-urlencode 'type=1'\
+curl -G 'http://member.bilibili.com/x/web/data/pandect' \
+--data-urlencode 'type=1' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -318,6 +339,8 @@ curl -G 'http://member.bilibili.com/x/web/data/pandect'\
 	]
 }
 ```
+
+</details>
 
 ## 专栏数据增量趋势
 
@@ -378,10 +401,13 @@ curl -G 'http://member.bilibili.com/x/web/data/pandect'\
 查询30天前的文章阅读增量趋势，可知`2020-04-05`的阅读增量为`6`，`2020-04-04`的阅读增量为`6`
 
 ```shell
-curl -G 'http://member.bilibili.com/x/web/data/article/thirty'\
---data-urlencode 'type=1'\
+curl -G 'http://member.bilibili.com/x/web/data/article/thirty' \
+--data-urlencode 'type=1' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -408,6 +434,8 @@ curl -G 'http://member.bilibili.com/x/web/data/article/thirty'\
 	}]
 }
 ```
+
+</details>
 
 ## 稿件操作来源占比情况
 
@@ -495,10 +523,13 @@ curl -G 'http://member.bilibili.com/x/web/data/article/thirty'\
 查询我的稿件来源占比情况
 
 ```shell
-curl -G 'http://member.bilibili.com/x/web/data/survey'\
---data-urlencode 'type=1'\
+curl -G 'http://member.bilibili.com/x/web/data/survey' \
+--data-urlencode 'type=1' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -545,6 +576,8 @@ curl -G 'http://member.bilibili.com/x/web/data/survey'\
 }
 ```
 
+</details>
+
 ## 播放来源占比情况（平台及方式）
 
 > http://member.bilibili.com/x/web/data/playsource
@@ -573,14 +606,14 @@ curl -G 'http://member.bilibili.com/x/web/data/survey'\
 
 `data`中的`page_source`对象：
 
-| 字段          | 类型 | 内容         | 备注 |
-| ------------- | ---- | ------------ | ---- |
-| dynamic       | num  | 通过动态     |      |
-| other         | num  | 其他方式     |      |
-| related_video | num  | 通过推荐列表 |      |
-| search        | num  | 通过搜索     |      |
-| space         | num  | 空间列表播放 |      |
-| tenma         | num  | ？？？       |      |
+| 字段          | 类型 | 内容                      | 备注 |
+| ------------- | ---- | ------------------------- | ---- |
+| dynamic       | num  | 通过动态                  |      |
+| other         | num  | 其他方式                  |      |
+| related_video | num  | 通过推荐列表              |      |
+| search        | num  | 通过搜索                  |      |
+| space         | num  | 空间列表播放              |      |
+| tenma         | num  | 天马（APP推荐信息流）来源 |      |
 
 `data`中的`play_proportion`对象：
 
@@ -595,9 +628,12 @@ curl -G 'http://member.bilibili.com/x/web/data/survey'\
 **示例：**
 
 ```shell
-curl 'http://member.bilibili.com/x/web/data/playsource'\
+curl 'http://member.bilibili.com/x/web/data/playsource' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -623,6 +659,8 @@ curl 'http://member.bilibili.com/x/web/data/playsource'\
 	}
 }
 ```
+
+</details>
 
 ## 播放分布情况（粉丝与路人）
 
@@ -725,9 +763,12 @@ curl 'http://member.bilibili.com/x/web/data/playsource'\
 **示例：**
 
 ```shell
-curl 'http://member.bilibili.com/x/web/data/base'\
+curl 'http://member.bilibili.com/x/web/data/base' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -845,3 +886,4 @@ curl 'http://member.bilibili.com/x/web/data/base'\
 }
 ```
 
+</details>

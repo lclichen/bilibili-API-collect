@@ -1,6 +1,8 @@
 # 通知消息
 
-**本页所有操作均需登录（SESSDATA）**
+- [未读消息数](#未读消息数)
+
+---
 
 ## 未读消息数
 
@@ -18,7 +20,7 @@
 | ------- | ---- | -------- | ----------------------------- |
 | code    | num  | 返回值   | 0：成功<br />-101：账号未登录 |
 | message | str  | 错误信息 | 默认为0                       |
-| ttl     | num  | 1        | 作用尚不明确                  |
+| ttl     | num  | 1        |                               |
 | data    | obj  | 信息本体 |                               |
 
 data 对象：
@@ -37,9 +39,12 @@ data 对象：
 以下信息代表了未读点赞数为10，未读回复数为4，未读at消息数为3，未读系统通知数为2，UP主助手信息数为1
 
 ```shell
-curl 'http://api.bilibili.com/x/msgfeed/unread'\
+curl 'http://api.bilibili.com/x/msgfeed/unread' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -57,3 +62,4 @@ curl 'http://api.bilibili.com/x/msgfeed/unread'\
 }
 ```
 
+</details>

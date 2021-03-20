@@ -1,6 +1,16 @@
 # 个人中心
 
-**本页所有操作均需登录（SESSDATA）**
+- [获取我的信息](#获取我的信息)
+- [查询每日奖励状态](#查询每日奖励状态)
+- [查询每日投币获得经验数](#查询每日投币获得经验数)
+- [查询大会员状态](#查询大会员状态)
+- [查询账号安全情况](#查询账号安全情况)
+- [查询账号实名认证状态](#查询账号实名认证状态)
+- [查询实名认证详细信息](#查询实名认证详细信息)
+- [查询硬币变化情况](#查询硬币变化情况)
+- [修改个人签名](#修改个人签名)
+
+---
 
 ## 获取我的信息
 
@@ -8,7 +18,13 @@
 
 *请求方式：GET*
 
-认证方式：Cookie（SESSDATA）
+认证方式：Cookie（SESSDATA）或APP
+
+**url参数：**
+
+| 参数名     | 类型 | 内容         | 必要性      | 备注 |
+| ---------- | ---- | ------------ | ----------- | ---- |
+| access_key | str  | APP登录Token | APP方式必要 |      |
 
 **json回复：**
 
@@ -18,7 +34,7 @@
 | ------- | ---- | -------- | ----------------------------- |
 | code    | num  | 返回值   | 0：成功<br />-101：账号未登录 |
 | message | str  | 错误信息 | 默认为0                       |
-| ttl     | num  | 1        | 作用尚不明确                  |
+| ttl     | num  | 1        |                               |
 | data    | obj  | 信息本体 |                               |
 
 `data`对象：
@@ -37,9 +53,12 @@
 **示例：**
 
 ```shell
-curl 'http://api.bilibili.com/x/member/web/account'\
+curl 'http://api.bilibili.com/x/member/web/account' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -59,13 +78,21 @@ curl 'http://api.bilibili.com/x/member/web/account'\
 }
 ```
 
+</details>
+
 ## 查询每日奖励状态
 
 > http://api.bilibili.com/x/member/web/exp/reward
 
 *请求方式：GET*
 
-认证方式：Cookie（SESSDATA）
+认证方式：Cookie（SESSDATA）或APP
+
+**url参数：**
+
+| 参数名     | 类型 | 内容         | 必要性      | 备注 |
+| ---------- | ---- | ------------ | ----------- | ---- |
+| access_key | str  | APP登录Token | APP方式必要 |      |
 
 **json回复：**
 
@@ -75,7 +102,7 @@ curl 'http://api.bilibili.com/x/member/web/account'\
 | ------- | ---- | -------- | ----------------------------- |
 | code    | num  | 返回值   | 0：成功<br />-101：账号未登录 |
 | message | str  | 错误信息 | 默认为0                       |
-| ttl     | num  | 1        | 作用尚不明确                  |
+| ttl     | num  | 1        |                               |
 | data    | obj  | 信息本体 |                               |
 
 `data`对象：
@@ -84,7 +111,7 @@ curl 'http://api.bilibili.com/x/member/web/account'\
 | ------------- | ---- | -------------------- | ------------------------------------------------------------ |
 | login         | bool | 每日登录             | false：未完成<br />true：已完成<br />完成奖励5经验           |
 | watch         | bool | 每日观看             | false：未完成<br />true：已完成<br />完成奖励5经验           |
-| coins         | num  | 每日投币所奖励的经验 | 上限为50                                                     |
+| coins         | num  | 每日投币所奖励的经验 | 上限为50<br />注：该值更新存在延迟<br />[另外一个专门API](#查询每日投币获得经验数) |
 | share         | bool | 每日分享             | false：未完成<br />true：已完成<br />完成奖励5经验           |
 | email         | bool | 绑定邮箱             | false：未完成<br />true：已完成                              |
 | tel           | bool | 绑定手机号           | false：未完成<br />true：已完成<br />首次完成完成奖励100经验 |
@@ -94,9 +121,12 @@ curl 'http://api.bilibili.com/x/member/web/account'\
 **示例：**
 
 ```shell
-curl 'http://api.bilibili.com/x/member/web/exp/reward'\
+curl 'http://api.bilibili.com/x/member/web/exp/reward' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -116,13 +146,57 @@ curl 'http://api.bilibili.com/x/member/web/exp/reward'\
 }
 ```
 
+</details>
+
+## 查询每日投币获得经验数
+
+>http://www.bilibili.com/plus/account/exp.php
+
+*请求方式：GET*
+
+认证方式：仅可Cookie（SESSDATA）
+
+鉴权方式：Cookie中`DedeUserID`存在且不为0
+
+该接口实时更新，未发现延迟
+
+**json回复：**
+
+根对象：
+
+| 字段    | 类型 | 内容                 | 备注        |
+| ------- | ---- | -------------------- | ----------- |
+| code    | num  | 返回值               | 0：成功     |
+| message | str  | 错误信息             | 默认为0     |
+| number  | num  | 每日投币所奖励的经验 | 上限为50<br |
+
+**示例：**
+
+```shell
+curl 'http://www.bilibili.com/plus/account/exp.php' \
+-b 'SESSDATA=xxx;DedeUserID=1'
+```
+
+<details>
+<summary>查看响应示例：</summary>
+
+```json
+{
+    "code": 0,
+    "message": "0",
+    "number": 20
+}
+```
+
+</details>
+
 ## 查询大会员状态
 
 > http://api.bilibili.com/x/vip/web/user/info
 
 *请求方式：GET*
 
-认证方式：Cookie（SESSDATA）
+认证方式：仅可Cookie（SESSDATA）
 
 **json回复：**
 
@@ -132,7 +206,7 @@ curl 'http://api.bilibili.com/x/member/web/exp/reward'\
 | ------- | ---- | -------- | ----------------------------- |
 | code    | num  | 返回值   | 0：成功<br />-101：账号未登录 |
 | message | str  | 错误信息 | 默认为0                       |
-| ttl     | num  | 1        | 作用尚不明确                  |
+| ttl     | num  | 1        |                               |
 | data    | obj  | 信息本体 |                               |
 
 `data`对象：
@@ -149,9 +223,12 @@ curl 'http://api.bilibili.com/x/member/web/exp/reward'\
 **示例：**
 
 ```shell
-curl 'http://api.bilibili.com/x/vip/web/user/info'\
+curl 'http://api.bilibili.com/x/vip/web/user/info' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -169,15 +246,23 @@ curl 'http://api.bilibili.com/x/vip/web/user/info'\
 }
 ```
 
+</details>
+
 ## 查询账号安全情况
 
 > http://passport.bilibili.com/web/site/user/info
 
 *请求方式：GET*
 
-认证方式：Cookie（SESSDATA）
+认证方式：Cookie（SESSDATA）或APP
 
-鉴权方式：Cookie中`DedeUserID`存在且不为0
+鉴权方式：如用Cookie方式认证时Cookie中`DedeUserID`存在且不为0
+
+**url参数：**
+
+| 参数名     | 类型 | 内容         | 必要性      | 备注 |
+| ---------- | ---- | ------------ | ----------- | ---- |
+| access_key | str  | APP登录Token | APP方式必要 |      |
 
 **json回复：**
 
@@ -187,7 +272,7 @@ curl 'http://api.bilibili.com/x/vip/web/user/info'\
 | ------- | ---- | -------- | ----------------------------- |
 | code    | num  | 返回值   | 0：成功<br />-101：账号未登录 |
 | message | str  | 错误信息 | 默认为0                       |
-| ttl     | num  | 1        | 作用尚不明确                  |
+| ttl     | num  | 1        |                               |
 | data    | obj  | 信息本体 |                               |
 
 `data`对象：
@@ -235,9 +320,12 @@ curl 'http://api.bilibili.com/x/vip/web/user/info'\
 **示例：**
 
 ```shell
-curl 'http://passport.bilibili.com/web/site/user/info'\
+curl 'http://passport.bilibili.com/web/site/user/info' \
 -b 'SESSDATA=xxx;DedeUserID=1;'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -268,13 +356,21 @@ curl 'http://passport.bilibili.com/web/site/user/info'\
 }
 ```
 
+</details>
+
 ## 查询账号实名认证状态
 
 > http://api.bilibili.com/x/member/realname/status
 
 *请求方式：GET*
 
-认证方式：Cookie（SESSDATA）
+认证方式：Cookie（SESSDATA）或APP
+
+**url参数：**
+
+| 参数名     | 类型 | 内容         | 必要性      | 备注 |
+| ---------- | ---- | ------------ | ----------- | ---- |
+| access_key | str  | APP登录Token | APP方式必要 |      |
 
 **json回复：**
 
@@ -284,7 +380,7 @@ curl 'http://passport.bilibili.com/web/site/user/info'\
 | ------- | ---- | -------- | ----------------------------- |
 | code    | num  | 返回值   | 0：成功<br />-101：账号未登录 |
 | message | str  | 错误信息 | 默认为0                       |
-| ttl     | num  | 1        | 作用尚不明确                  |
+| ttl     | num  | 1        |                               |
 | data    | obj  | 信息本体 |                               |
 
 `data`对象：
@@ -298,9 +394,12 @@ curl 'http://passport.bilibili.com/web/site/user/info'\
 当前状态为已认证
 
 ```shell
-curl 'http://api.bilibili.com/x/member/realname/status'\
+curl 'http://api.bilibili.com/x/member/realname/status' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -313,13 +412,21 @@ curl 'http://api.bilibili.com/x/member/realname/status'\
 }
 ```
 
+</details>
+
 ## 查询实名认证详细信息
 
 > http://api.bilibili.com/x/member/realname/apply/status
 
 *请求方式：GET*
 
-认证方式：Cookie（SESSDATA）
+认证方式：Cookie（SESSDATA）或APP
+
+**url参数：**
+
+| 参数名     | 类型 | 内容         | 必要性      | 备注 |
+| ---------- | ---- | ------------ | ----------- | ---- |
+| access_key | str  | APP登录Token | APP方式必要 |      |
 
 **json回复：**
 
@@ -329,7 +436,7 @@ curl 'http://api.bilibili.com/x/member/realname/status'\
 | ------- | ---- | -------- | ----------------------------- |
 | code    | num  | 返回值   | 0：成功<br />-101：账号未登录 |
 | message | str  | 错误信息 | 默认为0                       |
-| ttl     | num  | 1        | 作用尚不明确                  |
+| ttl     | num  | 1        |                               |
 | data    | obj  | 数据本体 |                               |
 
 `data`对象：
@@ -338,14 +445,17 @@ curl 'http://api.bilibili.com/x/member/realname/status'\
 | --------- | ---- | ------------ | ------------------------------------------------------------ |
 | status    | num  | 认证状态     | 1：已认证<br />3：未认证                                     |
 | remark    | str  | 驳回信息     | 默认为空                                                     |
-| realname  | str  | 实名姓名     | 星号隐藏部分信息                                             |
+| realname  | str  | 实名姓名     | 星号隐藏完全信息                                             |
 | card      | str  | 证件号码     | 星号隐藏部分信息                                             |
 | card_type | num  | 证件类型代码 | 0：身份证<br />2：港澳居民来往内地通行证<br />3：台湾居民来往大陆通行证<br />4：护照(中国签发)<br />5：外国人永久居留证<br />6：其他国家或地区身份证明 |
 
 ```shell
-curl 'http://api.bilibili.com/x/member/realname/apply/status'\
+curl 'http://api.bilibili.com/x/member/realname/apply/status' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -355,12 +465,14 @@ curl 'http://api.bilibili.com/x/member/realname/apply/status'\
     "data": {
         "status": 1,
         "remark": "",
-        "realname": "*唯恺",
-        "card": "6***************17",
+        "realname": "***",
+        "card": "6****************7",
         "card_type": 0
     }
 }
 ```
+
+</details>
 
 ## 查询硬币变化情况
 
@@ -368,9 +480,15 @@ curl 'http://api.bilibili.com/x/member/realname/apply/status'\
 
 *请求方式：GET*
 
-认证方式：Cookie（SESSDATA）
+认证方式：Cookie（SESSDATA）或APP
 
 仅能查询最近一周的情况
+
+**url参数：**
+
+| 参数名     | 类型 | 内容         | 必要性      | 备注 |
+| ---------- | ---- | ------------ | ----------- | ---- |
+| access_key | str  | APP登录Token | APP方式必要 |      |
 
 **json回复：**
 
@@ -380,7 +498,7 @@ curl 'http://api.bilibili.com/x/member/realname/apply/status'\
 | ------- | ---- | -------- | ----------------------------- |
 | code    | num  | 返回值   | 0：成功<br />-101：账号未登录 |
 | message | str  | 错误信息 | 默认为0                       |
-| ttl     | num  | 1        | 作用尚不明确                  |
+| ttl     | num  | 1        |                               |
 | data    | obj  | 数据本体 |                               |
 
 `data`对象：
@@ -409,9 +527,12 @@ curl 'http://api.bilibili.com/x/member/realname/apply/status'\
 **示例：**
 
 ```shell
-curl 'http://api.bilibili.com/x/member/web/coin/log'\
+curl 'http://api.bilibili.com/x/member/web/coin/log' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -491,22 +612,25 @@ curl 'http://api.bilibili.com/x/member/web/coin/log'\
 }
 ```
 
+</details>
+
 ## 修改个人签名
 
 > http://api.bilibili.com/x/member/web/sign/update
 
 *请求方式：POST*
 
-认证方式：Cookie（SESSDATA）
+认证方式：Cookie（SESSDATA）或APP
 
 修改签名不会立即生效，会等待审核队列稍后生效
 
 **正文参数（ application/x-www-form-urlencoded ）：**
 
-| 参数名    | 类型 | 内容                     | 必要性 | 备注                                         |
-| --------- | ---- | ------------------------ | ------ | -------------------------------------------- |
-| user_sign | str  | 要设置的签名内容         | 非必要 | 删除签名留空或省去即可<br />最多支持70个字符 |
-| csrf      | str  | CSRF Token（位于cookie） | 必要   |                                              |
+| 参数名     | 类型 | 内容                     | 必要性         | 备注                                         |
+| ---------- | ---- | ------------------------ | -------------- | -------------------------------------------- |
+| access_key | str  | APP登录Token             | APP方式必要    |                                              |
+| user_sign  | str  | 要设置的签名内容         | 非必要         | 删除签名留空或省去即可<br />最多支持70个字符 |
+| csrf       | str  | CSRF Token（位于cookie） | Cookie方式必要 |                                              |
 
 **json回复：**
 
@@ -516,18 +640,21 @@ curl 'http://api.bilibili.com/x/member/web/coin/log'\
 | ------- | ---- | -------- | ------------------------------------------------------------ |
 | code    | num  | 返回值   | 0：成功<br />-101：账号未登录<br />-111：csrf校验失败<br />40015：签名包含敏感词<br />40021：签名不能包含表情图片<br />40022：签名过长 |
 | message | str  | 错误信息 | 默认为0                                                      |
-| ttl     | num  | 1        | 作用尚不明确                                                 |
+| ttl     | num  | 1        |                                                              |
 
 **示例：**
 
 更新个人标签为`高中技术宅一枚，爱好MC&电子&8-bit音乐&数码&编程，资深猿厨，粉丝群：1136462265`
 
 ```shell
-curl 'http://api.bilibili.com/x/member/web/sign/update'\
---data-urlencode 'user_sign=高中技术宅一枚，爱好MC&电子&8-bit音乐&数码&编程，资深猿厨，粉丝群：1136462265'\
---data-urlencode 'csrf=xxx'\
+curl 'http://api.bilibili.com/x/member/web/sign/update' \
+--data-urlencode 'user_sign=高中技术宅一枚，爱好MC&电子&8-bit音乐&数码&编程，粉丝群：1136462265' \
+--data-urlencode 'csrf=xxx' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -537,5 +664,6 @@ curl 'http://api.bilibili.com/x/member/web/sign/update'\
 }
 ```
 
+</details>
 
 

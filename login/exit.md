@@ -1,5 +1,9 @@
 # 退出账号登录
 
+- [退出登录（web端）](#退出登录（web端）)
+
+---
+
 ## 退出登录（web端）
 
 > http://passport.bilibili.com/login?act=exit
@@ -21,13 +25,16 @@
 **示例：**
 
 ```shell
-curl 'http://passport.bilibili.com/login?act=exit'\
+curl 'http://passport.bilibili.com/login?act=exit' \
 -b 'SESSDATA=xxx;DedeUserID__ckMd5=xxx;SESSDATA=xxx;bili_jct=xxx'
 ```
 
 **响应头部抓包信息：**
 
 使用set-cookie删除了以上cookie项
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```http
 HTTP/1.1 200 OK
@@ -58,3 +65,4 @@ Content-Encoding: gzip
 
 ```
 
+</details>

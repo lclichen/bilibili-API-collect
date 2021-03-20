@@ -6,6 +6,15 @@ web端密码登录流程：
 2. 加密登录密码，获取RSA公钥`key`与盐值`hash`**（盐值有效时间为20s）**，并连接盐值+密码字串（注意先后顺序），使用RSA公钥加密，得到base64格式密文
 4. 登录操作验证，使用账号`username`**（手机号或邮箱）**+密文密码`password`+登录密钥`key`+极验`challenge`+验证结果`validate`+验证结果`seccode`
 
+---
+
+- [获取加密公钥及密码盐值1（web端）](#获取加密公钥及密码盐值1（web端）)
+- [获取加密公钥及密码盐值2（APP端）](#获取加密公钥及密码盐值2（APP端）)
+- [登录密码的加密](#登录密码的加密)
+- [使用账号密码登录（web端）](#使用账号密码登录（web端）)
+
+---
+
 ## 获取加密公钥及密码盐值1（web端）
 
 > http://passport.bilibili.com/login?act=getkey
@@ -27,12 +36,17 @@ web端密码登录流程：
 curl 'http://passport.bilibili.com/login?act=getkey'
 ```
 
+<details>
+<summary>查看响应示例：</summary>
+
 ```json
 {
     "hash":"07c6501690c1af85",
     "key":"-----BEGIN PUBLIC KEY-----\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDjb4V7EidX/ym28t2ybo0U6t0n\n6p4ej8VjqKHg100va6jkNbNTrLQqMCQCAYtXMXXp2Fwkk6WR+12N9zknLjf+C9sx\n/+l48mjUU8RqahiFD1XT/u2e0m2EN029OhCgkHx3Fc/KlFSIbak93EH/XlYis0w+\nXl69GV6klzgxW6d2xQIDAQAB\n-----END PUBLIC KEY-----\n"
 }
 ```
+
+</details>
 
 ## 获取加密公钥及密码盐值2（APP端）
 
@@ -61,10 +75,13 @@ curl 'http://passport.bilibili.com/login?act=getkey'
 **示例：**
 
 ```shell
-curl 'http://passport.bilibili.com/api/oauth2/getKey'\
---data-urlencode 'appkey=1d8b6e7d45233436'\
+curl 'http://passport.bilibili.com/api/oauth2/getKey' \
+--data-urlencode 'appkey=1d8b6e7d45233436' \
 --data-urlencode 'sign=17004c193f688f0b5665c1068e733aff'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -72,6 +89,8 @@ curl 'http://passport.bilibili.com/api/oauth2/getKey'\
     "key":"-----BEGIN PUBLIC KEY-----\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDjb4V7EidX/ym28t2ybo0U6t0n\n6p4ej8VjqKHg100va6jkNbNTrLQqMCQCAYtXMXXp2Fwkk6WR+12N9zknLjf+C9sx\n/+l48mjUU8RqahiFD1XT/u2e0m2EN029OhCgkHx3Fc/KlFSIbak93EH/XlYis0w+\nXl69GV6klzgxW6d2xQIDAQAB\n-----END PUBLIC KEY-----\n"
 }
 ```
+
+</details>
 
 ## 登录密码的加密
 
@@ -141,7 +160,7 @@ YgpjxAQ22pKa9socHIKPCZX0a/NS6Ng9Zzy+rp16b0LJGT6RHw2ERs3+ijCpG96PKTY1Baavwf0xgotm
 
 | 字段    | 类型 | 内容       | 备注                                                         |
 | ------- | ---- | ---------- | ------------------------------------------------------------ |
-| code    | num  | 返回值     | 0：成功<br />-400：请求错误<br />-629：账号或密码错误<br />-653：用户名或密码不能为空<br />-662：提交超时,请重新提交<br />-2001：缺少必要的的参数<br />2400：登录秘钥错误<br />2406：验证极验服务出错 |
+| code    | num  | 返回值     | 0：成功<br />-400：请求错误<br />-629：账号或密码错误<br />-653：用户名或密码不能为空<br />-662：提交超时,请重新提交<br />-2001：缺少必要的的参数<br />-2100：需验证手机号或邮箱<br />2400：登录秘钥错误<br />2406：验证极验服务出错 |
 | ts      | num  | 当前时间戳 | 成功时无此项                                                 |
 | message | str  | 错误信息   | 默认为0                                                      |
 | data    | obj  | 数据本体   | 成功时有此项                                                 |
@@ -161,21 +180,34 @@ YgpjxAQ22pKa9socHIKPCZX0a/NS6Ng9Zzy+rp16b0LJGT6RHw2ERs3+ijCpG96PKTY1Baavwf0xgotm
 | isLogin | bool | true                     |      |
 | goUrl   | str  | https://www.bilibili.com |      |
 
+**需验证手机号或邮箱时**
+| 字段     | 类型 | 内容                     | 备注             |
+| -------- | ---- | ------------------------ | ---------------- |
+| mid      | num  | 用户UID                  |                  |
+| tel      | str  | 绑定的手机号             | 星号隐藏部分信息 |
+| email    | str  | 绑定的邮箱               | 星号隐藏部分信息 |
+| sorce    | num  | 0                        | **作用尚不明确** |
+| keeptime | num  | 1                        | **作用尚不明确** |
+| goUrl    | str  | https://www.bilibili.com |                  |
+
 **示例：**
 
 例如用户账号为`12345678900`，加密后的密码为`xxx`，登录秘钥为`aabbccdd`，极验challenge为`2333`，极验结果为`666666`，进行验证登录操作
 
 ```shell
-curl 'https://passport.bilibili.com/web/login/v2'\
---data-urlencode 'captchaType=6'\
---data-urlencode 'username=12345678900'\
---data-urlencode 'password=xxx'\
---data-urlencode 'keep=true'\
---data-urlencode 'key=aabbccdd'\
---data-urlencode 'challenge=2333'\
---data-urlencode 'validate=666666'\
+curl 'https://passport.bilibili.com/web/login/v2' \
+--data-urlencode 'captchaType=6' \
+--data-urlencode 'username=12345678900' \
+--data-urlencode 'password=xxx' \
+--data-urlencode 'keep=true' \
+--data-urlencode 'key=aabbccdd' \
+--data-urlencode 'challenge=2333' \
+--data-urlencode 'validate=666666' \
 --data-urlencode 'seccode=666666|jordan'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -186,9 +218,14 @@ curl 'https://passport.bilibili.com/web/login/v2'\
 }
 ```
 
+</details>
+
 **响应头部抓包信息：**
 
 可明显看见设置了几个cookie（填入浏览器即可成功登录）
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```http
 HTTP/1.1 200 OK
@@ -206,6 +243,8 @@ Expires: Mon, 13 Jul 2020 06:55:59 GMT
 Cache-Control: no-cache
 X-Cache-Webcdn: BYPASS from jd-sxhz-dx-w-01
 ```
+
+</details>
 
 **游戏分站跨域登录url：**
 

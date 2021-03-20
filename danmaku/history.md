@@ -1,6 +1,12 @@
 # 历史弹幕
 
-**本页所有操作均需登录（SESSDATA）**
+**注：历史弹幕的xml接口已经失效，现已改为protobuf接口**
+
+- [查询历史弹幕日期](#查询历史弹幕日期)
+- [获取历史弹幕protobuf接口](#获取历史弹幕protobuf接口)
+- [~~获取历史弹幕xml接口~~](#获取历史弹幕xml接口)
+
+---
 
 ## 查询历史弹幕日期
 
@@ -10,13 +16,15 @@
 
 认证方式：Cookie（SESSDATA）
 
+**注：查询历史弹幕需要登录**
+
 **url参数：**
 
-| 参数名 | 类型 | 内容     | 必要性 | 备注         |
-| ------ | ---- | -------- | ------ | ------------ |
-| type   | num  | 1        | 必要   | 作用尚不明确 |
-| oid    | num  | 视频CID  | 必要   |              |
-| month  | str  | 查询月份 | 必要   | mm-dd        |
+| 参数名 | 类型 | 内容         | 必要性 | 备注    |
+| ------ | ---- | ------------ | ------ | ------- |
+| type   | num  | 1            | 必要   |         |
+| oid    | num  | 视频CID      | 必要   |         |
+| month  | str  | 查询目标年月 | 必要   | YYYY-MM |
 
 **json回复：**
 
@@ -33,8 +41,8 @@
 
 | 项   | 类型 | 内容                | 备注       |
 | ---- | ---- | ------------------- | ---------- |
-| 0    | str  | 存在弹幕的日期1     | yyyy-mm-dd |
-| n    | str  | 存在弹幕的日期(n+1) | yyyy-mm-dd |
+| 0    | str  | 存在弹幕的日期1     | YYYY-MM-DD |
+| n    | str  | 存在弹幕的日期(n+1) | YYYY-MM-DD |
 | ……   | str  | ……                  | ……         |
 
 **示例：**
@@ -42,11 +50,15 @@
 查询了cid为144541892的视频位于2020年1月中有历史弹幕记录的日期
 
 ```shell
-curl -G 'http://api.bilibili.com/x/v2/dm/history/index'\
---data-urlencode 'type=1'\
---data-urlencode 'oid=144541892'\
---data-urlencode 'month=2020-01'
+curl -G 'http://api.bilibili.com/x/v2/dm/history/index' \
+--data-urlencode 'type=1' \
+--data-urlencode 'oid=144541892' \
+--data-urlencode 'month=2020-01' \
+-b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -69,14 +81,20 @@ curl -G 'http://api.bilibili.com/x/v2/dm/history/index'\
 }
 ```
 
+</details>
+
 返回结果的 `data` 项说明这些日期有弹幕发送。若查询的月份中视频无弹幕，则 `data` 项为 `null`
 
 ```shell
-curl -G 'http://api.bilibili.com/x/v2/dm/history/index'\
---data-urlencode 'type=1'\
---data-urlencode 'oid=144541892'\
---data-urlencode 'month=2019-12'
+curl -G 'http://api.bilibili.com/x/v2/dm/history/index' \
+--data-urlencode 'type=1' \
+--data-urlencode 'oid=144541892' \
+--data-urlencode 'month=2019-12' \
+-b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -87,7 +105,75 @@ curl -G 'http://api.bilibili.com/x/v2/dm/history/index'\
 }
 ```
 
-## 获取历史弹幕
+</details>
+
+## 获取历史弹幕protobuf接口
+
+>  http://api.bilibili.com/x/v2/dm/web/history/seg.so
+
+*请求方式：GET*
+
+认证方式：Cookie（SESSDATA）
+
+**url参数：**
+
+| 参数名 | 类型 | 内容     | 必要性 | 备注        |
+| ------ | ---- | -------- | ------ | ----------- |
+| type   | num  | 弹幕类   | 必要   | 1：视频弹幕 |
+| oid    | num  | 视频CID  | 必要   |             |
+| date   | str  | 弹幕日期 | 必要   | YYYY-MM-DD  |
+
+**proto回复：**
+
+porto定义见：[bilibili.community.service.dm.v1.DmSegMobileReply](../grpc_api/bilibili/community/service/dm/v1.proto)
+
+详细说明见[protobuf弹幕](danmaku_proto.md)
+
+获取视频`av84271171(CID=144541892)`2020-01-21的历史弹幕
+
+**注：proto定义需要编译**
+
+```python
+import requests
+import google.protobuf.text_format as text_format
+import bilibili.community.service.dm.v1_pb2 as Danmaku
+
+url = 'http://api.bilibili.com/x/v2/dm/web/history/seg.so'
+params = {
+    'type':1,           #弹幕类型
+    'oid':144541892,    #cid
+    'date':'2020-01-21' #弹幕日期
+}
+cookies = {
+    'SESSDATA':'xxx'
+}
+resp = requests.get(url,params,cookies=cookies)
+data = resp.content
+
+danmaku_seg = Danmaku.DmSegMobileReply()
+danmaku_seg.ParseFromString(data)
+
+print(text_format.MessageToString(danmaku_seg.elems[0],as_utf8=True))
+```
+
+输出：
+
+```
+id: 27532611677585408
+progress: 300507
+mode: 1
+fontsize: 25
+color: 16777215
+midHash: "2a28d4a6"
+content: "章北海的老爹"
+ctime: 1579621359
+idStr: "27532611677585408"
+```
+
+## 获取历史弹幕xml接口
+
+<details>
+<summary>查看折叠内容：</summary>
 
 > http://api.bilibili.com/x/v2/dm/history
 
@@ -95,27 +181,35 @@ curl -G 'http://api.bilibili.com/x/v2/dm/history/index'\
 
 认证方式：Cookie（SESSDATA）
 
-结果为标准xml格式弹幕
+**注：查询历史弹幕需要登录**
+
+结果为[标准xml格式弹幕](danmaku_xml.md#弹幕格式)
 
 **使用deflate压缩，注意解码**
 
 **url参数：**
 
-| 参数名 | 类型 | 内容     | 必要性 | 备注         |
-| ------ | ---- | -------- | ------ | ------------ |
-| type   | num  | 1        | 必要   | 作用尚不明确 |
-| oid    | num  | 视频CID  | 必要   |              |
-| date   | str  | 弹幕日期 | 必要   | yyyy-mm-dd   |
+| 参数名 | 类型 | 内容     | 必要性 | 备注       |
+| ------ | ---- | -------- | ------ | ---------- |
+| type   | num  | 1        | 必要   |            |
+| oid    | num  | 视频CID  | 必要   |            |
+| date   | str  | 弹幕日期 | 必要   | YYYY-MM-DD |
 
 **示例：**
 
+获取视频`av84271171(CID=144541892)`2020-01-21的历史弹幕
+
 ```shell
-curl -G 'http://api.bilibili.com/x/v2/dm/history'\
---data-urlencode 'type=1'\
---data-urlencode 'oid=144541892'\
---data-urlencode 'date=2020-01-21'\
---compressed -o 'danmaku.xml'
+curl -G 'http://api.bilibili.com/x/v2/dm/history' \
+--data-urlencode 'type=1' \
+--data-urlencode 'oid=144541892' \
+--data-urlencode 'date=2020-01-21' \
+-b 'SESSDATA=xxx' \
+--compressed -o 'danmaku.xml' 
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -146,3 +240,7 @@ curl -G 'http://api.bilibili.com/x/v2/dm/history'\
     …………
 <i>
 ```
+
+</details>
+
+</details>

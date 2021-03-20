@@ -1,5 +1,11 @@
 # 获取当前时间戳
 
+- [获取当前时间戳](#获取当前时间戳)
+
+---
+
+## 获取当前时间戳
+
 > http://api.bilibili.com/x/report/click/now 
 
 *请求方式：GET*
@@ -27,6 +33,9 @@
 curl 'http://api.bilibili.com/x/report/click/now'
 ```
 
+<details>
+<summary>查看响应示例：</summary>
+
 ```json
 {
     "code": 0,
@@ -38,3 +47,4 @@ curl 'http://api.bilibili.com/x/report/click/now'
 }
 ```
 
+</details>

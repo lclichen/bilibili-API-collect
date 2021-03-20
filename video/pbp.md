@@ -4,17 +4,25 @@
 
 并用曲线顶点表示在进度条上，实现可视化
 
+---
+
+- [获取弹幕趋势顶点列表](#获取弹幕趋势顶点列表)
+
+---
+
 ## 获取弹幕趋势顶点列表
 
-> http://api.bilibili.com/pbp/data
+> http://bvc.bilivideo.com/pbp/data
 
 *请求方式：GET*
 
 **url参数：**
 
-| 参数名 | 类型 | 内容    | 必要性 | 备注 |
-| ------ | ---- | ------- | ------ | ---- |
-| vid    | num  | 视频CID | 必要   |      |
+| 参数名 | 类型 | 内容     | 必要性 | 备注 |
+| ------ | ---- | -------- | ------ | ---- |
+| cid    | num  | 视频CID  | 必要   |      |
+| aid    | num  | 稿件avID | 非必要 |      |
+| bvid   | num  | 稿件bvID | 非必要 |      |
 
 **json回复：**
 
@@ -46,9 +54,12 @@
 获取视频`CID=3724723`的获取弹幕趋势顶点列表
 
 ```shell
-curl -G 'http://api.bilibili.com/pbp/data'\
+curl -G 'http://api.bilibili.com/pbp/data' \
 --data-urlencode 'cid=3724723'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -61,3 +72,4 @@ curl -G 'http://api.bilibili.com/pbp/data'\
 }
 ```
 
+</details>

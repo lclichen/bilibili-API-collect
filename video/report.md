@@ -1,6 +1,9 @@
 # 视频观看数据上报
 
-**本页所有操作均需登录（Cookie或APP）**
+- [上报观看进度（双端）](#上报观看进度（双端）)
+- [上报视频播放心跳（web端）](#上报视频播放心跳（web端）)
+
+---
 
 ## 上报观看进度（双端）
 
@@ -15,7 +18,7 @@
 | 参数名     | 类型 | 内容                     | 必要性         | 备注                  |
 | ---------- | ---- | ------------------------ | -------------- | --------------------- |
 | access_key | str  | APP登录Token             | APP方式必要    |                       |
-| aid        | num  | 视频avID                 | 必要           |                       |
+| aid        | num  | 稿件avID                 | 必要           |                       |
 | cid        | num  | 视频CID                  | 必要           | 用于识别分P           |
 | progress   | num  | 观看进度                 | 非必要         | 单位为秒<br />默认为0 |
 | platform   | str  | 平台标识                 | 非必要         | 可为android           |
@@ -38,26 +41,29 @@
 Cookie方式：
 
 ```shell
-curl 'http://api.bilibili.com/x/v2/history/report'\
---data-urlencode 'aid=13662970'\
---data-urlencode 'cid=126654047'\
---data-urlencode 'progress=1248'\
---data-urlencode 'platform=android'\
---data-urlencode 'csrf=xxx'\
+curl 'http://api.bilibili.com/x/v2/history/report' \
+--data-urlencode 'aid=13662970' \
+--data-urlencode 'cid=126654047' \
+--data-urlencode 'progress=1248' \
+--data-urlencode 'platform=android' \
+--data-urlencode 'csrf=xxx' \
 -b 'SESSDATA=xxx'
 ```
 
 APP方式：
 
 ```shell
-curl 'http://api.bilibili.com/x/v2/history/report'\
---data-urlencode 'access_key=xxx'\
---data-urlencode 'aid=13662970'\
---data-urlencode 'cid=126654047'\
---data-urlencode 'progress=1248'\
+curl 'http://api.bilibili.com/x/v2/history/report' \
+--data-urlencode 'access_key=xxx' \
+--data-urlencode 'aid=13662970' \
+--data-urlencode 'cid=126654047' \
+--data-urlencode 'progress=1248' \
 --data-urlencode 'platform=android'
 ```
 
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -66,6 +72,8 @@ curl 'http://api.bilibili.com/x/v2/history/report'\
     "ttl": 1
 }
 ```
+
+</details>
 
 ## 上报视频播放心跳（web端）
 
@@ -83,8 +91,8 @@ curl 'http://api.bilibili.com/x/v2/history/report'\
 
 | 参数名      | 类型 | 内容                     | 必要性       | 备注                                                         |
 | ----------- | ---- | ------------------------ | ------------ | ------------------------------------------------------------ |
-| aid         | num  | 视频avID                 | 必要（可选） | avID与bvID任选一个                                           |
-| bvid        | str  | 视频bvID                 | 必要（可选） | avID与bvID任选一个                                           |
+| aid         | num  | 稿件avID                 | 必要（可选） | avID与bvID任选一个                                           |
+| bvid        | str  | 稿件bvID                 | 必要（可选） | avID与bvID任选一个                                           |
 | cid         | num  | 视频CID                  | 非必要       | 用于识别分P                                                  |
 | epid        | num  | 番剧epID                 | 非必要       |                                                              |
 | sid         | num  | 番剧ssID                 | 非必要       |                                                              |
@@ -113,19 +121,22 @@ curl 'http://api.bilibili.com/x/v2/history/report'\
 上报一次视频`av2`/`BV1xx411c7mD`的心跳数据
 
 ```shell
-curl 'api.bilibili.com/x/click-interface/web/heartbeat'\
---data-urlencode 'aid=2'\
---data-urlencode 'bvid=BV1xx411c7mD'\
---data-urlencode 'cid=62131'\
---data-urlencode 'played_time=60'\
---data-urlencode 'realtime=60'\
---data-urlencode 'start_ts=1592720840'\
---data-urlencode 'type=3'\
---data-urlencode 'dt=2'\
---data-urlencode 'play_type=0'\
---data-urlencode 'csrf=xxx'\
+curl 'api.bilibili.com/x/click-interface/web/heartbeat' \
+--data-urlencode 'aid=2' \
+--data-urlencode 'bvid=BV1xx411c7mD' \
+--data-urlencode 'cid=62131' \
+--data-urlencode 'played_time=60' \
+--data-urlencode 'realtime=60' \
+--data-urlencode 'start_ts=1592720840' \
+--data-urlencode 'type=3' \
+--data-urlencode 'dt=2' \
+--data-urlencode 'play_type=0' \
+--data-urlencode 'csrf=xxx' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -135,3 +146,4 @@ curl 'api.bilibili.com/x/click-interface/web/heartbeat'\
 }
 ```
 
+</details>

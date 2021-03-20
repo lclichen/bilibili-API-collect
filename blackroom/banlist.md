@@ -1,5 +1,10 @@
 # 封禁公示
 
+- [获取封禁用户公示列表](#获取封禁用户公示列表)
+- [封禁处理公示详情](#封禁处理公示详情)
+
+---
+
 **已知的违规类型代码总览：**
 
 | 代码 | 含义                 |
@@ -121,11 +126,14 @@
 查询所有类型，所有来源的第1页的封禁公示列表
 
 ```shell
-curl -G 'http://api.bilibili.com/x/credit/blocked/list'\
---data-urlencode 'btype='\
---data-urlencode 'otype=0'\
+curl -G 'http://api.bilibili.com/x/credit/blocked/list' \
+--data-urlencode 'btype=' \
+--data-urlencode 'otype=0' \
 --data-urlencode 'pn=1'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -190,6 +198,8 @@ curl -G 'http://api.bilibili.com/x/credit/blocked/list'\
 }
 ```
 
+</details>
+
 ## 封禁处理公示详情
 
 > http://api.bilibili.com/x/credit/blocked/info
@@ -248,9 +258,12 @@ curl -G 'http://api.bilibili.com/x/credit/blocked/list'\
 查询公示ID为`1091621`的公示详情
 
 ```shell
-curl -G 'http://api.bilibili.com/x/credit/blocked/info'\
+curl -G 'http://api.bilibili.com/x/credit/blocked/info' \
 --data-urlencode 'id=1091621'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -287,3 +300,4 @@ curl -G 'http://api.bilibili.com/x/credit/blocked/info'\
 }
 ```
 
+</details>

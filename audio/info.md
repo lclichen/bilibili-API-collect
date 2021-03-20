@@ -1,5 +1,12 @@
 # 歌曲基本信息
 
+- [查询歌曲基本信息](#查询歌曲基本信息)
+- [查询歌曲TAG](#查询歌曲TAG)
+- [查询歌曲创作成员列表](#查询歌曲创作成员列表)
+- [获取歌曲歌词](#获取歌曲歌词)
+
+---
+
 ## 查询歌曲基本信息
 
 > http://www.bilibili.com/audio/music-service-c/web/song/info
@@ -40,8 +47,8 @@
 | duration   | num    | 歌曲时间长度       | 单位为秒           |
 | passtime   | num    | 歌曲发布时间       | 时间戳             |
 | curtime    | num    | 当前请求时间       | 时间戳             |
-| aid        | num    | 关联视频avID       | 无为0              |
-| bvid       | str    | 关联视频bvID       | 无为空             |
+| aid        | num    | 关联稿件avID       | 无为0              |
+| bvid       | str    | 关联稿件bvID       | 无为空             |
 | cid        | num    | 关联视频CID        | 无为0              |
 | msid       | num    | 0                  | **作用尚不明确**   |
 | attr       | num    | 0                  | **作用尚不明确**   |
@@ -86,10 +93,13 @@
 查询音频`au13598`的基本信息
 
 ```shell
-curl -G 'http://www.bilibili.com/audio/music-service-c/web/song/info'\
---data-urlencode 'sid=13598'\
+curl -G 'http://www.bilibili.com/audio/music-service-c/web/song/info' \
+--data-urlencode 'sid=13598' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -138,6 +148,8 @@ curl -G 'http://www.bilibili.com/audio/music-service-c/web/song/info'\
 }
 ```
 
+</details>
+
 ## 查询歌曲TAG
 
 > http://www.bilibili.com/audio/music-service-c/web/tag/song
@@ -182,9 +194,12 @@ curl -G 'http://www.bilibili.com/audio/music-service-c/web/song/info'\
 查询音频`au15664`的TAG
 
 ```shell
-curl -G 'http://www.bilibili.com/audio/music-service-c/web/tag/song'\
+curl -G 'http://www.bilibili.com/audio/music-service-c/web/tag/song' \
 --data-urlencode 'sid=15664'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -230,6 +245,8 @@ curl -G 'http://www.bilibili.com/audio/music-service-c/web/tag/song'\
     ]
 }
 ```
+
+</details>
 
 ## 查询歌曲创作成员列表
 
@@ -289,9 +306,12 @@ curl -G 'http://www.bilibili.com/audio/music-service-c/web/tag/song'\
 查询音频`au815861`的创作成员信息
 
 ```shell
-curl -G 'http://www.bilibili.com/audio/music-service-c/web/member/song'\
+curl -G 'http://www.bilibili.com/audio/music-service-c/web/member/song' \
 --data-urlencode 'sid=815861'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -362,13 +382,15 @@ curl -G 'http://www.bilibili.com/audio/music-service-c/web/member/song'\
 }
 ```
 
+</details>
+
 ## 获取歌曲歌词
 
 > http://www.bilibili.com/audio/music-service-c/web/song/lyric
 
 *请求方式：GET*
 
-同「查询歌曲基本信息」中的lrc歌词	
+同[查询歌曲基本信息](#查询歌曲基本信息)中的lrc歌词
 
 **url参数：**
 
@@ -391,10 +413,13 @@ curl -G 'http://www.bilibili.com/audio/music-service-c/web/member/song'\
 获取音频`au15664`的歌词信息
 
 ```shell
-curl -G 'http://www.bilibili.com/audio/music-service-c/web/song/lyric'\
---data-urlencode 'sid=15664'\
+curl -G 'http://www.bilibili.com/audio/music-service-c/web/song/lyric' \
+--data-urlencode 'sid=15664' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -404,3 +429,4 @@ curl -G 'http://www.bilibili.com/audio/music-service-c/web/song/lyric'\
 }
 ```
 
+</details>

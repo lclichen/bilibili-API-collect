@@ -1,5 +1,9 @@
 # 专栏基本信息
 
+- [获取专栏文章基本信息](#获取专栏文章基本信息)
+
+---
+
 ## 获取专栏文章基本信息
 
 > http://api.bilibili.com/x/article/viewinfo
@@ -29,9 +33,9 @@
 
 | 字段              | 类型   | 内容             | 备注                                                         |
 | ----------------- | ------ | ---------------- | ------------------------------------------------------------ |
-| like              | num    | 是否点赞         | 0：未点赞<br />1：已点赞<br />需要登录(SESSDATA) <br />未登录为0 |
-| attention         | bool   | 是否关注文章作者 | false：未关注<br />true：已关注<br />需要登录(SESSDATA) <br />未登录为false |
-| favorite          | bool   | 是否收藏         | false：未收藏<br />true：已收藏<br />需要登录(SESSDATA) <br />未登录为false |
+| like              | num    | 是否点赞         | 0：未点赞<br />1：已点赞<br />需要登录(Cookie) <br />未登录为0 |
+| attention         | bool   | 是否关注文章作者 | false：未关注<br />true：已关注<br />需要登录(Cookie) <br />未登录为false |
+| favorite          | bool   | 是否收藏         | false：未收藏<br />true：已收藏<br />需要登录(Cookie) <br />未登录为false |
 | coin              | num    | 为文章投币数     |                                                              |
 | stats             | obj    | 状态数信息       |                                                              |
 | title             | str    | 文章标题         |                                                              |
@@ -97,10 +101,13 @@
 查询文章`cv2`的基本信息
 
 ```shell
-curl -G 'http://api.bilibili.com/x/article/viewinfo'\
---data-urlencode 'id=2'\
+curl -G 'http://api.bilibili.com/x/article/viewinfo' \
+--data-urlencode 'id=2' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -160,3 +167,4 @@ curl -G 'http://api.bilibili.com/x/article/viewinfo'\
 }
 ```
 
+</details>

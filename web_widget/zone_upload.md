@@ -1,4 +1,10 @@
-# 获取分区当日投稿稿件数
+# 分区当日投稿数
+
+- [获取分区当日投稿稿件数](#获取分区当日投稿稿件数)
+
+---
+
+## 获取分区当日投稿稿件数
 
 > http://api.bilibili.com/x/web-interface/online
 
@@ -54,6 +60,9 @@
 curl 'http://api.bilibili.com/x/web-interface/online'
 ```
 
+<details>
+<summary>查看响应示例：</summary>
+
 ```json
 {
     "code": 0,
@@ -88,3 +97,4 @@ curl 'http://api.bilibili.com/x/web-interface/online'
 }
 ```
 
+</details>

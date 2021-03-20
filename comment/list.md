@@ -1,52 +1,33 @@
-# 点评评论区明细
+# 评论区明细
 
-<img src="/imgs/comment.svg" width="100" height="100"/>
+- [获取评论区明细（无楼层号）](#获取评论区明细（无楼层号）)
+- [获取评论区明细（带有楼层号 ）](#获取评论区明细（带有楼层号 ）)
+- [获取指定评论条目及二级回复明细（分离结构 无楼层号）](#获取指定评论条目及二级回复明细（分离结构 无楼层号）)
+- [获取指定评论条目及二级回复明细（嵌套结构 带有楼层号）](#获取指定评论条目及二级回复明细（嵌套结构 带有楼层号）)
+- [获取指定评论对话树（带有楼层）](#获取指定评论对话树（带有楼层）)
+- [获取评论区评论总数](#获取评论区评论总数)
 
-**已知的评论区类型代码总览：**
+---
 
-| 代码 | 评论区类型              | oid的意义  |
-| ---- | ----------------------- | ---------- |
-| 1    | 视频稿件                | 视频avID   |
-| 2    | 话题                    | 话题ID     |
-| 4    | 活动                    | 活动ID     |
-| 5    | 小视频                  | 小视频ID   |
-| 6    | 小黑屋封禁信息          | 封禁公示ID |
-| 7    | 公告信息                | 公告ID     |
-| 8    | 直播活动                | 直播间ID   |
-| 9    | 活动稿件                |            |
-| 10   | 直播公告                |            |
-| 11   | 相簿（图片动态）        | 相簿ID     |
-| 12   | 专栏                    | 专栏cvID   |
-| 13   | 票务                    |            |
-| 14   | 音频                    | 音频auID   |
-| 15   | 风纪委员会              | 众裁项目ID |
-| 16   | 点评                    |            |
-| 17   | 动态（纯文字动态&分享） | 动态ID     |
-| 18   | 播单                    |            |
-| 19   | 音乐播单                |            |
-| 20   | 漫画                    |            |
-| 21   | 漫画                    |            |
-| 22   | 漫画                    | 漫画mcID   |
-| 33   | 课程                    | 课程epID   |
-
-## 获取评论区明细1(web端)（无楼层号）
+## 获取评论区明细（无楼层号）
 
 > http://api.bilibili.com/x/v2/reply
 
 *请求方式：GET*
 
-认证方式：Cookie（SESSDATA）
+认证方式：Cookie（SESSDATA）或APP
 
 **url参数：**
 
-| 参数名 | 类型 | 内容           | 必要性 | 备注                                                     |
-| ------ | ---- | -------------- | ------ | -------------------------------------------------------- |
-| type   | num  | 评论区类型代码 | 必要   | **类型代码见上表**                                       |
-| oid    | num  | 目标评论区ID   | 必要   |                                                          |
-| sort   | num  | 排序方式       | 非必要 | 默认为0<br />0：按时间<br />1：按点赞数<br />2：按回复数 |
-| nohot  | num  | 是否不显示热评 | 非必要 | 默认为0<br />1：不显示<br />0：显示                      |
-| pn     | num  | 页码           | 非必要 | 默认为1                                                  |
-| ps     | num  | 每页项数       | 非必要 | 默认为20<br />定义域：1-49                               |
+| 参数名     | 类型 | 内容           | 必要性      | 备注                                                     |
+| ---------- | ---- | -------------- | ----------- | -------------------------------------------------------- |
+| access_key | str  | APP登录Token   | APP方式必要 |                                                          |
+| type       | num  | 评论区类型代码 | 必要        | [类型代码见表](readme.md#评论区类型代码)                 |
+| oid        | num  | 目标评论区ID   | 必要        |                                                          |
+| sort       | num  | 排序方式       | 非必要      | 默认为0<br />0：按时间<br />1：按点赞数<br />2：按回复数 |
+| nohot      | num  | 是否不显示热评 | 非必要      | 默认为0<br />1：不显示<br />0：显示                      |
+| pn         | num  | 页码           | 非必要      | 默认为1                                                  |
+| ps         | num  | 每页项数       | 非必要      | 默认为20<br />定义域：1-49                               |
 
 **json回复：**
 
@@ -64,19 +45,19 @@
 | 字段         | 类型                             | 内容     | 备注             |
 | ------------ | -------------------------------- | -------- | ---------------- |
 | page         | obj                              | 页信息   |                  |
-| config       | obj                              | 属性信息 |                  |
-| replies      | 禁用时：null<br />正常时：array | 评论根列表 |                  |
-| hots         | 禁用时：null<br />正常时：array | 热评根列表 |                  |
+| config       | obj                              | 评论区显示控制 |                  |
+| replies      | 禁用时：null<br />正常时：array | 评论列表 |                  |
+| hots         | 禁用时：null<br />正常时：array | 热评列表 |                  |
 | upper        | obj                              | 置顶评论 |                  |
 | top          | null                             | -        | **作用尚不明确** |
 | notice       | 无效时：null<br />有效时：obj            | 评论区公告信息 |  |
 | vote         | num                              | 0        | **作用尚不明确** |
 | blacklist    | num                              | 0        | **作用尚不明确** |
 | assist       | num                              | 0        | **作用尚不明确** |
-| mode         | num                              | 3        | **作用尚不明确** |
-| support_mode | array                           | ？？？   | **作用尚不明确** |
-| folder       | obj                              | ??? | **作用尚不明确** |
-| lottery_card | null                             | -        | **作用尚不明确** |
+| mode         | num                              | 评论区类型id |  |
+| support_mode | array                           | 评论区支持的类型id |  |
+| folder       | obj                              | 折叠相关信息 |  |
+| lottery_card | null                             | -       | **作用尚不明确** |
 | show_bvid    | bool                             | true     | **作用尚不明确** |
 | control      | obj                              | 评论区输入属性 |                  |
 
@@ -91,39 +72,39 @@
 
 `data`中的`config`对象：
 
-| 字段         | 类型 | 内容  | 备注             |
-| ------------ | ---- | ----- | ---------------- |
-| showadmin    | num  | 1     | **作用尚不明确** |
-| showentry    | num  | 1     | **作用尚不明确** |
-| showfloor    | num  | 0     | **作用尚不明确** |
-| showtopic    | num  | 1     | **作用尚不明确** |
-| show_up_flag | bool | true  | **作用尚不明确** |
-| read_only    | bool | false | **作用尚不明确** |
-| show_del_log | bool | false | **作用尚不明确** |
+| 字段         | 类型 | 内容                     | 备注 |
+| ------------ | ---- | ------------------------ | ---- |
+| showadmin    | num  | 是否显示管理置顶         |      |
+| showentry    | num  | ？                       |      |
+| showfloor    | num  | 是否显示楼层号           |      |
+| showtopic    | num  | 是否显示话题             |      |
+| show_up_flag | bool | 是否显示“UP觉得很赞”标志 |      |
+| read_only    | bool | 是否只读评论区           |      |
+| show_del_log | bool | 是否显示删除记录         |      |
 
 `data`中的`replies`数组：
 
-| 项   | 类型 | 内容          | 备注               |
-| ---- | ---- | ------------- | ------------------ |
-| 0    | obj  | 评论条目1     | **详情见附表**     |
-| n    | obj  | 评论条目(n+1) | 按照指定的顺序排列 |
-| ……   | obj  | ……            | ……                 |
+| 项   | 类型 | 内容          | 备注                                   |
+| ---- | ---- | ------------- | -------------------------------------- |
+| 0    | obj  | 评论条目1     | [对象定义见表](readme.md#评论条目对象) |
+| n    | obj  | 评论条目(n+1) | 按照指定的顺序排列                     |
+| ……   | obj  | ……            | ……                                     |
 
 `data`中的`hots`数组：
 
-| 项   | 类型 | 内容          | 备注             |
-| ---- | ---- | ------------- | ---------------- |
-| 0    | obj  | 热评条目1     | **详情见附表**   |
-| n    | obj  | 热评条目(n+1) | 按照热评热度排列 |
-| ……   | obj  | ……            | ……               |
+| 项   | 类型 | 内容          | 备注                                   |
+| ---- | ---- | ------------- | -------------------------------------- |
+| 0    | obj  | 热评条目1     | [对象定义见表](readme.md#评论条目对象) |
+| n    | obj  | 热评条目(n+1) | 按照热评热度排列                       |
+| ……   | obj  | ……            | ……                                     |
 
 `data`中的`upper`对象：
 
-| 字段 | 类型                          | 内容     | 备注           |
-| ---- | ----------------------------- | -------- | -------------- |
-| mid  | num                           | UP主UID  |                |
-| top  | 有效时：obj<br />无效时：null | 置顶条目 | **详情见附表** |
-| vote | null                          | -        |                |
+| 字段 | 类型                          | 内容       | 备注                                   |
+| ---- | ----------------------------- | ---------- | -------------------------------------- |
+| mid  | num                           | UP主UID    |                                        |
+| top  | 有效时：obj<br />无效时：null | 置顶条目   | [对象定义见表](readme.md#评论条目对象) |
+| vote | 有效时：obj<br />无效时：null | 投票评论？ |                                        |
 
 `data`中的`notice`对象：
 
@@ -144,11 +125,11 @@
 
 `data`中的`folder`对象：
 
-| 字段       | 类型 | 内容   | 备注             |
-| ---------- | ---- | ------ | ---------------- |
-| has_folded | bool | false  | **作用尚不明确** |
-| is_folded  | bool | false  | **作用尚不明确** |
-| rule       | str  | ？？？ | **作用尚不明确** |
+| 字段       | 类型 | 内容                   | 备注             |
+| ---------- | ---- | ---------------------- | ---------------- |
+| has_folded | bool | 评论区是否存在折叠评论 |                  |
+| is_folded  | bool | false                  | **作用尚不明确** |
+| rule       | str  | 相关规则页面url        |                  |
 
 `data`中的`control`对象：
 
@@ -169,15 +150,18 @@
 获取视频`av2`的评论区明细，不显示热评，按照热度排序，每页5项，查看第1页
 
 ```shell
-curl -G 'http://api.bilibili.com/x/v2/reply'\
---data-urlencode 'type=1'\
---data-urlencode 'oid=2'\
---data-urlencode 'sort=1'\
---data-urlencode 'ps=5'\
---data-urlencode 'pn=1'\
---data-urlencode 'nohot=1'\
+curl -G 'http://api.bilibili.com/x/v2/reply' \
+--data-urlencode 'type=1' \
+--data-urlencode 'oid=2' \
+--data-urlencode 'sort=1' \
+--data-urlencode 'ps=5' \
+--data-urlencode 'pn=1' \
+--data-urlencode 'nohot=1' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -2342,25 +2326,26 @@ curl -G 'http://api.bilibili.com/x/v2/reply'\
 }
 ```
 
+</details>
 
-
-## 获取评论区明细2(APP端)（带有楼层号 ）
+## 获取评论区明细（带有楼层号 ）
 
 > http://api.bilibili.com/x/v2/reply/main
 
 *请求方式：GET*
 
-认证方式：Cookie（SESSDATA）
+认证方式：Cookie（SESSDATA）或APP
 
 **url参数：**
 
-| 参数名 | 类型 | 内容           | 必要性 | 备注                                                         |
-| ------ | ---- | -------------- | ------ | ------------------------------------------------------------ |
-| type   | num  | 评论区类型代码 | 必要   | **类型代码见上表**                                           |
-| oid    | num  | 目标评论区ID   | 必要   |                                                              |
-| mode   | num  | 排序方式       | 非必要 | 默认为0<br />0 3：仅按热度<br />1：按热度+按时间<br />2：仅按时间 |
-| next   | num  | 评论页选择     | 非必要 | 按热度时：热度顺序页码（0为第一页）<br />按时间时：时间倒序楼层号<br />默认为0 |
-| ps     | num  | 每页项数       | 非必要 | 默认为20<br />定义域：1-49                                   |
+| 参数名     | 类型 | 内容           | 必要性      | 备注                                                         |
+| ---------- | ---- | -------------- | ----------- | ------------------------------------------------------------ |
+| access_key | str  | APP登录Token   | APP方式必要 |                                                              |
+| type       | num  | 评论区类型代码 | 必要        | [类型代码见表](readme.md#评论区类型代码)                     |
+| oid        | num  | 目标评论区ID   | 必要        |                                                              |
+| mode       | num  | 排序方式       | 非必要      | 默认为0<br />0 3：仅按热度<br />1：按热度+按时间<br />2：仅按时间 |
+| next       | num  | 评论页选择     | 非必要      | 按热度时：热度顺序页码（0为第一页）<br />按时间时：时间倒序楼层号<br />默认为0 |
+| ps         | num  | 每页项数       | 非必要      | 默认为20<br />定义域：1-49                                   |
 
 **json回复：**
 
@@ -2377,21 +2362,21 @@ curl -G 'http://api.bilibili.com/x/v2/reply'\
 
 | 字段         | 类型                             | 内容     | 备注             |
 | ------------ | -------------------------------- | -------- | ---------------- |
-| cursor    | obj                              | 页信息   |                  |
-| hots         | 禁用时：null<br />正常时：array | 热评根列表 |                  |
+| cursor    | obj                              | 游标信息 |                  |
+| hots         | 禁用时：null<br />正常时：array | 热评列表 |                  |
 | notice       | 无效时：null<br />有效时：obj            | 评论区公告信息 |  |
-| replies      | 禁用时：null<br />正常时：array | 评论根列表 |                  |
-| top          | obj                       | -        | **作用尚不明确** |
-| lottery_card | null                             | -        | **作用尚不明确** |
-| folder       | obj                              | ??? | **作用尚不明确** |
+| replies      | 禁用时：null<br />正常时：array | 评论列表 |                  |
+| top          | obj                       | 置顶评论 |  |
+| lottery_card | null                             | 抽奖评论    |  |
+| folder       | obj                              | 评论折叠信息 |  |
 | assist       | num                              | 0        | **作用尚不明确** |
 | blacklist    | num                              | 0        | **作用尚不明确** |
 | vote         | num                              | 0        | **作用尚不明确** |
 | lottery | num | 0 | **作用尚不明确** |
-| config       | obj                              | 属性信息 |                  |
+| config       | obj                              | 评论区显示控制 |                  |
 | upper        | obj                              | UP主信息 |                  |
-| mode         | num                              | 3        | **作用尚不明确** |
-| support_mode | array                           | ？？？   | **作用尚不明确** |
+| mode         | num                              | 评论区类型id |  |
+| support_mode | array                           | 评论区支持的类型id |  |
 | show_bvid    | bool                             | true     | **作用尚不明确** |
 | control      | obj                              | 评论区输入属性 |                  |
 
@@ -2419,39 +2404,39 @@ curl -G 'http://api.bilibili.com/x/v2/reply'\
 
 `data`中的`top`对象：
 
-| 字段  | 类型                          | 内容     | 备注           |
-| ----- | ----------------------------- | -------- | -------------- |
-| admin | null                          | -        |                |
-| upper | 有效时：obj<br />无效时：null | 置顶条目 | **详情见附表** |
-| vote  | null                          | -        |                |
+| 字段  | 类型                          | 内容           | 备注                                   |
+| ----- | ----------------------------- | -------------- | -------------------------------------- |
+| admin | 有效时：obj<br />无效时：null | 管理员置顶条目 | [对象定义见表](readme.md#评论条目对象) |
+| upper | 有效时：obj<br />无效时：null | UP主置顶条目   | [对象定义见表](readme.md#评论条目对象) |
+| vote  | 有效时：obj<br />无效时：null | 投票置顶条目   | [对象定义见表](readme.md#评论条目对象) |
 
 `data`中的`config`对象：
 
-| 字段         | 类型 | 内容  | 备注             |
-| ------------ | ---- | ----- | ---------------- |
-| showadmin    | num  | 1     | **作用尚不明确** |
-| showentry    | num  | 1     | **作用尚不明确** |
-| showfloor    | num  | 0     | **作用尚不明确** |
-| showtopic    | num  | 1     | **作用尚不明确** |
-| show_up_flag | bool | true  | **作用尚不明确** |
-| read_only    | bool | false | **作用尚不明确** |
-| show_del_log | bool | false | **作用尚不明确** |
+| 字段         | 类型 | 内容                     | 备注 |
+| ------------ | ---- | ------------------------ | ---- |
+| showadmin    | num  | 是否显示管理置顶         |      |
+| showentry    | num  | ？                       |      |
+| showfloor    | num  | 是否显示楼层号           |      |
+| showtopic    | num  | 是否显示话题             |      |
+| show_up_flag | bool | 是否显示“UP觉得很赞”标志 |      |
+| read_only    | bool | 是否只读评论区           |      |
+| show_del_log | bool | 是否显示删除记录         |      |
 
 `data`中的`replies`数组：
 
-| 项   | 类型 | 内容          | 备注               |
-| ---- | ---- | ------------- | ------------------ |
-| 0    | obj  | 评论条目1     | **详情见附表**     |
-| n    | obj  | 评论条目(n+1) | 按照指定的顺序排列 |
-| ……   | obj  | ……            | ……                 |
+| 项   | 类型 | 内容          | 备注                                   |
+| ---- | ---- | ------------- | -------------------------------------- |
+| 0    | obj  | 评论条目1     | [对象定义见表](readme.md#评论条目对象) |
+| n    | obj  | 评论条目(n+1) | 按照指定的顺序排列                     |
+| ……   | obj  | ……            | ……                                     |
 
 `data`中的`hots`数组：
 
-| 项   | 类型 | 内容          | 备注             |
-| ---- | ---- | ------------- | ---------------- |
-| 0    | obj  | 热评条目1     | **详情见附表**   |
-| n    | obj  | 热评条目(n+1) | 按照热评热度排列 |
-| ……   | obj  | ……            | ……               |
+| 项   | 类型 | 内容          | 备注                                   |
+| ---- | ---- | ------------- | -------------------------------------- |
+| 0    | obj  | 热评条目1     | [对象定义见表](readme.md#评论条目对象) |
+| n    | obj  | 热评条目(n+1) | 按照热评热度排列                       |
+| ……   | obj  | ……            | ……                                     |
 
 `data`中的`upper`对象：
 
@@ -2503,14 +2488,17 @@ curl -G 'http://api.bilibili.com/x/v2/reply'\
 获取视频`av2`的评论区明细（显示楼层号），按照热度排序，每页5项，查看第1页
 
 ```shell
-curl -G 'http://api.bilibili.com/x/v2/reply/main'\
---data-urlencode 'type=1'\
---data-urlencode 'oid=2'\
---data-urlencode 'mode=3'\
---data-urlencode 'next=0'\
---data-urlencode 'ps=5'\
+curl -G 'http://api.bilibili.com/x/v2/reply/main' \
+--data-urlencode 'type=1' \
+--data-urlencode 'oid=2' \
+--data-urlencode 'mode=3' \
+--data-urlencode 'next=0' \
+--data-urlencode 'ps=5' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -4718,27 +4706,28 @@ curl -G 'http://api.bilibili.com/x/v2/reply/main'\
 }
 ```
 
+</details>
 
-
-## 获取指定评论条目及二级回复明细1（web端）（分离结构 无楼层号）
+## 获取指定评论条目及二级回复明细（分离结构 无楼层号）
 
 > http://api.bilibili.com/x/v2/reply/reply
 
 *请求方式：GET*
 
-认证方式：Cookie（SESSDATA）
+认证方式：Cookie（SESSDATA）或APP
 
 按照热度排列
 
 **url参数：**
 
-| 参数名 | 类型 | 内容             | 必要性 | 备注                       |
-| ------ | ---- | ---------------- | ------ | -------------------------- |
-| type   | num  | 评论区类型代码   | 必要   | **类型代码见上表**         |
-| oid    | num  | 目标评论区ID     | 必要   |                            |
-| root   | num  | 目标一级评论rpID | 必要   |                            |
-| pn     | num  | 二级评论页码     | 非必要 | 默认为1                    |
-| ps     | num  | 二级评论每页项数 | 非必要 | 默认为20<br />定义域：1-49 |
+| 参数名     | 类型 | 内容             | 必要性      | 备注                                     |
+| ---------- | ---- | ---------------- | ----------- | ---------------------------------------- |
+| access_key | str  | APP登录Token     | APP方式必要 |                                          |
+| type       | num  | 评论区类型代码   | 必要        | [类型代码见表](readme.md#评论区类型代码) |
+| oid        | num  | 目标评论区ID     | 必要        |                                          |
+| root       | num  | 目标一级评论rpID | 必要        |                                          |
+| pn         | num  | 二级评论页码     | 非必要      | 默认为1                                  |
+| ps         | num  | 二级评论每页项数 | 非必要      | 默认为20<br />定义域：1-49               |
 
 **json回复：**
 
@@ -4755,11 +4744,11 @@ curl -G 'http://api.bilibili.com/x/v2/reply/main'\
 
 | 字段         | 类型                             | 内容     | 备注             |
 | ------------ | -------------------------------- | -------- | ---------------- |
-| config       | obj                              | 属性信息 |                  |
+| config       | obj                              | 评论区显示控制 |                  |
 | control      | obj                              | 评论区输入属性 |                  |
 | page         | obj                              | 页信息   |                  |
 | replies      | array | 二级评论列表 |                  |
-| root      | obj   | 根评论         | **详情见附表** |
+| root      | obj   | 根评论         | [对象定义见表](readme.md#评论条目对象) |
 | show_bvid    | bool                             | true     | **作用尚不明确** |
 | upper    | obj                           | UP主UID  |  |
 
@@ -4774,23 +4763,23 @@ curl -G 'http://api.bilibili.com/x/v2/reply/main'\
 
 `data`中的`config`对象：
 
-| 字段         | 类型 | 内容  | 备注             |
-| ------------ | ---- | ----- | ---------------- |
-| showadmin    | num  | 0     | **作用尚不明确** |
-| showentry    | num  | 0     | **作用尚不明确** |
-| showfloor    | num  | 0     | **作用尚不明确** |
-| showtopic    | num  | 0     | **作用尚不明确** |
-| show_up_flag | bool | false | **作用尚不明确** |
-| read_only    | bool | false | **作用尚不明确** |
-| show_del_log | bool | false | **作用尚不明确** |
+| 字段         | 类型 | 内容                     | 备注 |
+| ------------ | ---- | ------------------------ | ---- |
+| showadmin    | num  | 是否显示管理置顶         |      |
+| showentry    | num  | ？                       |      |
+| showfloor    | num  | 是否显示楼层号           |      |
+| showtopic    | num  | 是否显示话题             |      |
+| show_up_flag | bool | 是否显示“UP觉得很赞”标志 |      |
+| read_only    | bool | 是否只读评论区           |      |
+| show_del_log | bool | 是否显示删除记录         |      |
 
 `data`中的`replies`数组：
 
-| 项   | 类型 | 内容              | 备注           |
-| ---- | ---- | ----------------- | -------------- |
-| 0    | obj  | 二级评论条目1     | **详情见附表** |
-| n    | obj  | 二级评论条目(n+1) | 按照热度排列   |
-| ……   | obj  | ……                | ……             |
+| 项   | 类型 | 内容              | 备注                                   |
+| ---- | ---- | ----------------- | -------------------------------------- |
+| 0    | obj  | 二级评论条目1     | [对象定义见表](readme.md#评论条目对象) |
+| n    | obj  | 二级评论条目(n+1) | 按照热度排列                           |
+| ……   | obj  | ……                | ……                                     |
 
 `data`中的`upper`对象：
 
@@ -4803,14 +4792,17 @@ curl -G 'http://api.bilibili.com/x/v2/reply/main'\
 获取视频`av2`下评论`rpID=476670`的二级评论，每页5项，查看第1页
 
 ```shell
-curl -G 'http://api.bilibili.com/x/v2/reply/reply'\
---data-urlencode 'type=1'\
---data-urlencode 'oid=2'\
---data-urlencode 'root=476670'\
---data-urlencode 'ps=5'\
---data-urlencode 'pn=1'\
+curl -G 'http://api.bilibili.com/x/v2/reply/reply' \
+--data-urlencode 'type=1' \
+--data-urlencode 'oid=2' \
+--data-urlencode 'root=476670' \
+--data-urlencode 'ps=5' \
+--data-urlencode 'pn=1' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -5450,27 +5442,30 @@ curl -G 'http://api.bilibili.com/x/v2/reply/reply'\
 }
 ```
 
+</details>
 
 
-## 获取指定评论条目及二级回复明细2（APP端）（嵌套结构 带有楼层号）
+
+## 获取指定评论条目及二级回复明细（嵌套结构 带有楼层号）
 
 > http://api.bilibili.com/x/v2/reply/detail
 
 *请求方式：GET*
 
-认证方式：Cookie（SESSDATA）
+认证方式：Cookie（SESSDATA）或APP
 
 按照楼层排列
 
 **url参数：**
 
-| 参数名 | 类型 | 内容           | 必要性 | 备注                                   |
-| ------ | ---- | -------------- | ------ | -------------------------------------- |
-| type   | num  | 评论区类型代码 | 必要   | **类型代码见上表**                     |
-| oid    | num  | 目标评论区ID   | 必要   |                                        |
-| root   | num  | 根回复rpID     | 必要   |                                        |
-| next   | num  | 评论页选择     | 非必要 | 第一页为0<br />默认为0<br />顺序楼层号 |
-| ps     | num  | 每页项数       | 非必要 | 默认为0                                |
+| 参数名     | 类型 | 内容           | 必要性      | 备注                                     |
+| ---------- | ---- | -------------- | ----------- | ---------------------------------------- |
+| access_key | str  | APP登录Token   | APP方式必要 |                                          |
+| type       | num  | 评论区类型代码 | 必要        | [类型代码见表](readme.md#评论区类型代码) |
+| oid        | num  | 目标评论区ID   | 必要        |                                          |
+| root       | num  | 根回复rpID     | 必要        |                                          |
+| next       | num  | 评论页选择     | 非必要      | 第一页为0<br />默认为0<br />顺序楼层号   |
+| ps         | num  | 每页项数       | 非必要      | 默认为0                                  |
 
 **json回复：**
 
@@ -5485,19 +5480,19 @@ curl -G 'http://api.bilibili.com/x/v2/reply/reply'\
 
 `data`对象：
 
-| 字段      | 类型 | 内容           | 备注             |
-| --------- | ---- | -------------- | ---------------- |
-| cursor    | obj  | 页信息         |                  |
-| assist    | num  | 0              | **作用尚不明确** |
-| blacklist | num  | 0              | **作用尚不明确** |
-| vote      | num  | 0              | **作用尚不明确** |
-| lottery   | num  | 0              | **作用尚不明确** |
-| config    | obj  | 属性信息       |                  |
-| upper     | obj  | UP主UID        |                  |
-| show_bvid | bool | true           | **作用尚不明确** |
-| control   | obj  | 评论区输入属性 |                  |
-| root      | obj  | 根评论         | **详情见附表**   |
-| Mid       | num  | 0              | **作用尚不明确** |
+| 字段      | 类型 | 内容           | 备注                                   |
+| --------- | ---- | -------------- | -------------------------------------- |
+| cursor    | obj  | 页信息         |                                        |
+| assist    | num  | 0              | **作用尚不明确**                       |
+| blacklist | num  | 0              | **作用尚不明确**                       |
+| vote      | num  | 0              | **作用尚不明确**                       |
+| lottery   | num  | 0              | **作用尚不明确**                       |
+| config    | obj  | 评论区显示控制 |                                        |
+| upper     | obj  | UP主UID        |                                        |
+| show_bvid | bool | true           | **作用尚不明确**                       |
+| control   | obj  | 评论区输入属性 |                                        |
+| root      | obj  | 根评论         | [对象定义见表](readme.md#评论条目对象) |
+| Mid       | num  | 0              | **作用尚不明确**                       |
 
 `data`中的`cursor`对象：
 
@@ -5510,15 +5505,15 @@ curl -G 'http://api.bilibili.com/x/v2/reply/reply'\
 
 `data`中的`config`对象：
 
-| 字段         | 类型 | 内容  | 备注             |
-| ------------ | ---- | ----- | ---------------- |
-| showadmin    | num  | 1     | **作用尚不明确** |
-| showentry    | num  | 1     | **作用尚不明确** |
-| showfloor    | num  | 0     | **作用尚不明确** |
-| showtopic    | num  | 1     | **作用尚不明确** |
-| show_up_flag | bool | true  | **作用尚不明确** |
-| read_only    | bool | false | **作用尚不明确** |
-| show_del_log | bool | false | **作用尚不明确** |
+| 字段         | 类型 | 内容                     | 备注 |
+| ------------ | ---- | ------------------------ | ---- |
+| showadmin    | num  | 是否显示管理置顶         |      |
+| showentry    | num  | ？                       |      |
+| showfloor    | num  | 是否显示楼层号           |      |
+| showtopic    | num  | 是否显示话题             |      |
+| show_up_flag | bool | 是否显示“UP觉得很赞”标志 |      |
+| read_only    | bool | 是否只读评论区           |      |
+| show_del_log | bool | 是否显示删除记录         |      |
 
 `data`中的`upper`对象：
 
@@ -5545,14 +5540,17 @@ curl -G 'http://api.bilibili.com/x/v2/reply/reply'\
 获取视频`av2`下评论`rpID=476670`的二级评论，每页5项，查看第1页
 
 ```shell
-curl -G 'http://api.bilibili.com/x/v2/reply/detail'\
---data-urlencode 'type=1'\
---data-urlencode 'oid=2'\
---data-urlencode 'root=476670'\
---data-urlencode 'ps=5'\
---data-urlencode 'next=0'\
+curl -G 'http://api.bilibili.com/x/v2/reply/detail' \
+--data-urlencode 'type=1' \
+--data-urlencode 'oid=2' \
+--data-urlencode 'root=476670' \
+--data-urlencode 'ps=5' \
+--data-urlencode 'next=0' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -6203,25 +6201,28 @@ curl -G 'http://api.bilibili.com/x/v2/reply/detail'\
 }
 ```
 
-## 获取指定评论对话树（APP端）（带有楼层）
+</details>
+
+## 获取指定评论对话树（带有楼层）
 
 > http://api.bilibili.com/x/v2/reply/dialog/cursor
 
 *请求方式：GET*
 
-认证方式：Cookie（SESSDATA）
+认证方式：Cookie（SESSDATA）或APP
 
 按照楼层排列
 
 **url参数：**
 
-| 参数名 | 类型 | 内容           | 必要性 | 备注               |
-| ------ | ---- | -------------- | ------ | ------------------ |
-| type   | num  | 评论区类型代码 | 必要   | **类型代码见上表** |
-| oid    | num  | 目标评论区ID   | 必要   |                    |
-| root   | num  | 根回复rpID     | 必要   |                    |
-| dialog | num  | 对话树根rpID   | 必要   |                    |
-| size   | num  | 每页最大项数   | 必要   |                    |
+| 参数名     | 类型 | 内容           | 必要性      | 备注                                     |
+| ---------- | ---- | -------------- | ----------- | ---------------------------------------- |
+| access_key | str  | APP登录Token   | APP方式必要 |                                          |
+| type       | num  | 评论区类型代码 | 必要        | [类型代码见表](readme.md#评论区类型代码) |
+| oid        | num  | 目标评论区ID   | 必要        |                                          |
+| root       | num  | 根回复rpID     | 必要        |                                          |
+| dialog     | num  | 对话树根rpID   | 必要        |                                          |
+| size       | num  | 每页最大项数   | 必要        |                                          |
 
 **json回复：**
 
@@ -6245,7 +6246,7 @@ curl -G 'http://api.bilibili.com/x/v2/reply/detail'\
 | blacklist | num   | 0              | **作用尚不明确** |
 | vote      | num   | 0              | **作用尚不明确** |
 | lottery   | num   | 0              | **作用尚不明确** |
-| config    | obj   | 属性信息       |                  |
+| config    | obj   | 评论区显示控制 |                  |
 | upper     | obj   | UP主UID        |                  |
 | show_bvid | bool  | true           | **作用尚不明确** |
 | control   | obj   | 评论区输入属性 |                  |
@@ -6267,23 +6268,23 @@ curl -G 'http://api.bilibili.com/x/v2/reply/detail'\
 
 `data`中的`replies`数组：
 
-| 项   | 类型 | 内容              | 备注             |
-| ---- | ---- | ----------------- | ---------------- |
-| 0    | obj  | 对话评论条目1     | **详情见附表**   |
-| n    | obj  | 对话评论条目(n+1) | 按照对话顺序排列 |
-| ……   | obj  | ……                | ……               |
+| 项   | 类型 | 内容              | 备注                                   |
+| ---- | ---- | ----------------- | -------------------------------------- |
+| 0    | obj  | 对话评论条目1     | [对象定义见表](readme.md#评论条目对象) |
+| n    | obj  | 对话评论条目(n+1) | 按照对话顺序排列                       |
+| ……   | obj  | ……                | ……                                     |
 
 `data`中的`config`对象：
 
-| 字段         | 类型 | 内容  | 备注             |
-| ------------ | ---- | ----- | ---------------- |
-| showadmin    | num  | 1     | **作用尚不明确** |
-| showentry    | num  | 1     | **作用尚不明确** |
-| showfloor    | num  | 0     | **作用尚不明确** |
-| showtopic    | num  | 1     | **作用尚不明确** |
-| show_up_flag | bool | true  | **作用尚不明确** |
-| read_only    | bool | false | **作用尚不明确** |
-| show_del_log | bool | false | **作用尚不明确** |
+| 字段         | 类型 | 内容                     | 备注 |
+| ------------ | ---- | ------------------------ | ---- |
+| showadmin    | num  | 是否显示管理置顶         |      |
+| showentry    | num  | ？                       |      |
+| showfloor    | num  | 是否显示楼层号           |      |
+| showtopic    | num  | 是否显示话题             |      |
+| show_up_flag | bool | 是否显示“UP觉得很赞”标志 |      |
+| read_only    | bool | 是否只读评论区           |      |
+| show_del_log | bool | 是否显示删除记录         |      |
 
 `data`中的`upper`对象：
 
@@ -6310,14 +6311,17 @@ curl -G 'http://api.bilibili.com/x/v2/reply/detail'\
 获取视频`av201022189`下评论`rpID=3030790837`的对话`rpID=3030978856`，每页最大5项
 
 ```shell
-curl -G 'http://api.bilibili.com/x/v2/reply/dialog/cursor'\
---data-urlencode 'type=1'\
---data-urlencode 'oid=201022189'\
---data-urlencode 'root=3030790837'\
---data-urlencode 'dialog=3030978856'\
---data-urlencode 'size=5'\
+curl -G 'http://api.bilibili.com/x/v2/reply/dialog/cursor' \
+--data-urlencode 'type=1' \
+--data-urlencode 'oid=201022189' \
+--data-urlencode 'root=3030790837' \
+--data-urlencode 'dialog=3030978856' \
+--data-urlencode 'size=5' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -7070,7 +7074,9 @@ curl -G 'http://api.bilibili.com/x/v2/reply/dialog/cursor'\
 }
 ```
 
-## 获取评论区评论总数（APP端）
+</details>
+
+## 获取评论区评论总数
 
 > http://api.bilibili.com/x/v2/reply/count
 
@@ -7078,10 +7084,10 @@ curl -G 'http://api.bilibili.com/x/v2/reply/dialog/cursor'\
 
 **url参数：**
 
-| 参数名 | 类型 | 内容           | 必要性 | 备注               |
-| ------ | ---- | -------------- | ------ | ------------------ |
-| type   | num  | 评论区类型代码 | 必要   | **类型代码见上表** |
-| oid    | num  | 目标评论区ID   | 必要   |                    |
+| 参数名 | 类型 | 内容           | 必要性 | 备注                                         |
+| ------ | ---- | -------------- | ------ | -------------------------------------------- |
+| type   | num  | 评论区类型代码 | 必要   | **[类型代码见表](readme.md#评论区类型代码)** |
+| oid    | num  | 目标评论区ID   | 必要   |                                              |
 
 **json回复：**
 
@@ -7105,10 +7111,13 @@ curl -G 'http://api.bilibili.com/x/v2/reply/dialog/cursor'\
 获取视频`av2`的评论区总计评论条数
 
 ```shell
-curl -G 'http://api.bilibili.com/x/v2/reply/count'\
---data-urlencode 'type=1'\
+curl -G 'http://api.bilibili.com/x/v2/reply/count' \
+--data-urlencode 'type=1' \
 --data-urlencode 'oid=2'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -7121,236 +7130,6 @@ curl -G 'http://api.bilibili.com/x/v2/reply/count'\
 }
 ```
 
+</details>
 
-## 附表-评论条目对象
 
-| 字段        | 类型                            | 内容             | 备注                                                         |
-| ----------- | ------------------------------- | ---------------- | ------------------------------------------------------------ |
-| rpid        | num                             | 评论rpID         |                                                              |
-| oid         | num                             | 目标评论区rpID   |                                                              |
-| type        | num                             | 评论区类型代码   | **类型代码见上表**                                           |
-| mid         | num                             | 评论发送者UID    |                                                              |
-| root        | num                             | 根评论rpID       | 若为一级评论则为0<br />大于一级评论则为根评论ID              |
-| parent      | num                             | 回复父评论rpID   | 若为一级评论则为0<br />若为二级评论则为根评论rpID<br />大于二级评论为上一级评论rpID |
-| dialog      | num                             | 回复对方rpID     | 若为一级评论则为0<br />若为二级评论则为该评论rpID<br />大于二级评论为上一级评论rpID |
-| count       | num                             | 评论回复条数     |                                                              |
-| rcount      | num                             | 评论回复条数     |                                                              |
-| floor       | num                             | 评论楼层号       | **重要：若不支持楼层则无此项**                               |
-| state       | num                             | 0                | **作用尚不明确**                                             |
-| fansgrade   | num                             | 是否具有粉丝标签 | 0：无<br />1：有                                             |
-| attr        | num                             | ？？？           | **作用尚不明确**                                             |
-| ctime       | num                             | 评论发送时间     | 时间戳                                                       |
-| rpid_str    | str                             | 评论rpID         | 字串格式                                                     |
-| root_str    | str                             | 根评论rpID       | 字串格式                                                     |
-| parent_str  | str                             | 回复父评论rpID   | 字串格式                                                     |
-| like        | num                             | 评论获赞数       |                                                              |
-| action      | num                             | 当前用户操作状态 | 需要登录(SESSDATA) <br />否则恒为0<br />0：无<br />1：已点赞<br />2：已点踩 |
-| member      | obj                             | 评论发送者信息   |                                                              |
-| content     | obj                             | 评论信息         |                                                              |
-| replies     | 无效时：null<br />有效时：array | 评论回复条目预览 | **仅嵌套一层**<br />否则为null                               |
-| assist      | num                             |                  | **作用尚不明确**                                             |
-| folder      | obj                             | ？？？           |                                                              |
-| up_action   | obj                             | 评论UP主操作信息 |                                                              |
-| show_follow | bool                            | false            | **作用尚不明确**                                             |
-
-`评论条目`中的`member`对象：
-
-| 字段            | 类型                          | 内容                   | 备注                                                         |
-| --------------- | ----------------------------- | ---------------------- | ------------------------------------------------------------ |
-| mid             | str                           | 发送者UID              |                                                              |
-| uname           | str                           | 发送者昵称             |                                                              |
-| sex             | str                           | 发送者性别             | 男 女 保密                                                   |
-| sign            | str                           | 发送者签名             |                                                              |
-| avatar          | str                           | 发送者头像             |                                                              |
-| rank            | str                           | 10000                  | **作用尚不明确**                                             |
-| DisplayRank     | str                           | 0                      | **作用尚不明确**                                             |
-| level_info      | obj                           | 发送者等级             |                                                              |
-| pendant         | obj                           | 发送者头像框信息       |                                                              |
-| nameplate       | obj                           | 发送者勋章信息         |                                                              |
-| official_verify | obj                           | 发送者认证信息         |                                                              |
-| vip             | obj                           | 发送者会员信息         |                                                              |
-| fans_detail     | 无效时：null<br />有效时：obj | 发送者粉丝标签         |                                                              |
-| following       | num                           | 是否关注该用户         | 需要登录(SESSDATA) <br />否则恒为0<br />0：未关注<br />1：已关注 |
-| is_followed     | num                           | 是否被该用户关注       | 需要登录(SESSDATA) <br />否则恒为0<br />0：未关注<br />1：已关注 |
-| user_sailing    | obj                           | 发送者评论条目装扮信息 |                                                              |
-
-`member`中的`level_info`对象：
-
-| 字段          | 类型 | 内容     | 备注             |
-| ------------- | ---- | -------- | ---------------- |
-| current_level | num  | 用户等级 |                  |
-| current_min   | num  | 0        | **作用尚不明确** |
-| current_exp   | num  | 0        | **作用尚不明确** |
-| next_exp      | num  | 0        | **作用尚不明确** |
-
-`member`中的`pendant`对象：
-
-| 字段          | 类型 | 内容          | 备注                 |
-| ------------- | ---- | ------------- | -------------------- |
-| pid           | num  | 头像框id      | **详细说明有待补充** |
-| name          | str  | 头像框名称    |                      |
-| image         | str  | 头像框图片url |                      |
-| expire        | num  | 0             | **作用尚不明确**     |
-| image_enhance | str  | 头像框图片url |                      |
-
-`member`中的`nameplate`对象：
-
-| 字段        | 类型 | 内容             | 备注                 |
-| ----------- | ---- | ---------------- | -------------------- |
-| nid         | num  | 勋章id           | **详细说明有待补充** |
-| name        | str  | 勋章名称         |                      |
-| image       | str  | 挂件图片url 正常 |                      |
-| image_small | str  | 勋章图片url 小   |                      |
-| level       | str  | 勋章等级         |                      |
-| condition   | str  | 勋章条件         |                      |
-
-`member`中的`official_verify`对象：
-
-| 字段 | 类型 | 内容     | 备注                |
-| ---- | ---- | -------- | ------------------- |
-| type | num  | 是否认证 | -1：无<br />0：认证 |
-| desc | str  | 认证信息 | 无为空              |
-
-`member`中的`vip`对象：
-
-| 字段          | 类型 | 内容           | 备注                                |
-| ------------- | ---- | -------------- | ----------------------------------- |
-| vipType       | num  | 大会员类型     | 0：无<br />1：月会员<br />2：年会员 |
-| vipDueDate    | num  | 大会员到期时间 | 毫秒 时间戳                         |
-| dueRemark     | str  | 空             | **作用尚不明确**                    |
-| accessStatus  | num  | 0              | **作用尚不明确**                    |
-| vipStatus     | num  | 大会员状态     | 0：无<br />1：有                    |
-| vipStatusWarn | str  | 空             | **作用尚不明确**                    |
-| theme_type    | num  | 0              | **作用尚不明确**                    |
-| label         | obj  | ？？？         |                                     |
-
-`vip`中的`label`对象:
-
-| 字段        | 类型 | 内容         | 备注             |
-| ----------- | ---- | ------------ | ---------------- |
-| path        | str  | 空           | **作用尚不明确** |
-| text        | str  | 会员类型信息 |                  |
-| label_theme | str  | 会员类型     |                  |
-
-`member`中的`fans_detail`对象:
-
-| 字段          | 类型 | 内容         | 备注                 |
-| ------------- | ---- | ------------ | -------------------- |
-| uid           | num  | 用户UID      |                      |
-| medal_id      | num  | 粉丝标签ID   | **详细说明有待补充** |
-| medal_name    | str  | 粉丝标签名   |                      |
-| score         | num  | 0            | **作用尚不明确**     |
-| level         | num  | 当前标签等级 |                      |
-| intimacy      | num  | 0            | **作用尚不明确**     |
-| master_status | num  | 1            | **作用尚不明确**     |
-| is_receive    | num  | 1            | **作用尚不明确**     |
-
-`member`中的`user_sailing`对象：
-
-| 字段              | 类型                          | 内容         | 备注             |
-| ----------------- | ----------------------------- | ------------ | ---------------- |
-| pendant           | 无效时：null<br />有效时：obj | 头像框信息   |                  |
-| cardbg            | 无效时：null<br />有效时：obj | 评论条目装扮 |                  |
-| cardbg_with_focus | null                          | -            | **作用尚不明确** |
-
-`user_sailing`中的`pendant`对象：
-
-| 字段     | 类型 | 内容          | 备注                                  |
-| -------- | ---- | ------------- | ------------------------------------- |
-| id       | num  | 头像框ID      |                                       |
-| name     | str  | 头像框名称    |                                       |
-| image    | str  | 头像框图片url |                                       |
-| jump_url | str  | 空            |                                       |
-| type     | str  | 装扮类型      | suit：一般装扮<br />vip_suit：vip装扮 |
-
-`user_sailing`中的`cardbg`对象：
-
-| 字段     | 类型 | 内容                    | 备注                                  |
-| -------- | ---- | ----------------------- | ------------------------------------- |
-| id       | num  | 评论条目装扮ID          |                                       |
-| name     | str  | 评论条目装扮名称        |                                       |
-| image    | str  | 评论条目装扮图片url     |                                       |
-| jump_url | str  | 评论条目装扮商城页面url |                                       |
-| fan      | obj  | 粉丝专属信息            |                                       |
-| type     | str  | 装扮类型                | suit：一般装扮<br />vip_suit：vip装扮 |
-
-`cardbg`中的`fan`对象：
-
-| 字段     | 类型 | 内容               | 备注             |
-| -------- | ---- | ------------------ | ---------------- |
-| is_fan   | num  | 是否为粉丝专属装扮 | 0：否<br />1：是 |
-| number   | num  | 粉丝专属编号       |                  |
-| color    | str  | 数字颜色           | 颜色码           |
-| name     | str  | 装扮名称           |                  |
-| num_desc | str  | 粉丝专属编号       | 字串格式         |
-
-`评论条目`中的`content`对象：
-
-| 字段     | 类型  | 内容                 | 备注                                                         |
-| -------- | ----- | -------------------- | ------------------------------------------------------------ |
-| message  | str   | 评论内容             | **重要**                                                     |
-| plat     | num   | 评论发送平台         | 1：web端<br />2：安卓客户端<br />3：ios客户端<br />4：wp客户端 |
-| device   | str   | 评论发送平台设备     |                                                              |
-| members  | array | 评论中at到的用户信息 |                                                              |
-| emote    | obj   | 表情转义符信息       | 评论内容无表情则无此项                                       |
-| jump_url | obj   | 空                   | **作用尚不明确**                                             |
-| max_line | num   | 6                    | **作用尚不明确**                                             |
-
-`content`中的`members`数组：
-
-| 项   | 类型 | 内容            | 备注                             |
-| ---- | ---- | --------------- | -------------------------------- |
-| 0    | obj  | at到的用户1     | 基本同`评论条目`中的`member`对象 |
-| n    | obj  | at到的用户(n+1) | 项数为at到的不同的用户数         |
-| ……   | obj  | ……              | ……                               |
-
-`content`中的`emote`对象：
-
-| 字段         | 类型 | 内容            | 备注     |
-| ------------ | ---- | --------------- | -------- |
-| {表情转义符} | obj  | 表情转义符信息1 |          |
-| ……           | obj  | 表情转义符信息n | 向下扩展 |
-
-`emote`中的`{表情转义符}`对象：
-
-| 字段       | 类型 | 内容         | 备注                                                     |
-| ---------- | ---- | ------------ | -------------------------------------------------------- |
-| id         | num  | 表情ID       |                                                          |
-| package_id | num  | 表情包ID     |                                                          |
-| state      | num  | 0            |                                                          |
-| type       | num  | 表情类型     | 1：免费<br />2：会员专属<br />3：购买所得<br />4：颜文字 |
-| attr       | num  | 0            | **作用尚不明确**                                         |
-| text       | str  | 表情转义符   |                                                          |
-| url        | str  | 表情图片url  |                                                          |
-| meta       | obj  | 属性信息     |                                                          |
-| mtime      | num  | 表情创建时间 | 时间戳                                                   |
-
-`{表情转义符}`中的`meta`对象：
-
-| 字段  | 类型 | 内容         | 备注             |
-| ----- | ---- | ------------ | ---------------- |
-| size  | num  | 表情尺寸信息 | 1：小<br />2：大 |
-| alias | str  | 简写名       | 无则无此项       |
-
-`评论条目`中的`replies`数组：
-
-| 项   | 类型 | 内容      | 备注                                                         |
-| ---- | ---- | --------- | ------------------------------------------------------------ |
-| 0    | obj  | 回复条目1 | **为本对象的递归嵌套**<br />**仅嵌套一层**<br />按照热度顺序排列 |
-| 1    | obj  | 回复条目2 |                                                              |
-| 2    | obj  | 回复条目3 | 最后一项                                                     |
-
-`评论条目`中的`folder`对象：
-
-| 字段       | 类型 | 内容   | 备注             |
-| ---------- | ---- | ------ | ---------------- |
-| has_folded | bool | false  | **作用尚不明确** |
-| is_folded  | bool | false  | **作用尚不明确** |
-| rule       | str  | ？？？ | **作用尚不明确** |
-
-`评论条目`中的`up_action`对象：
-
-| 字段  | 类型 | 内容             | 备注                    |
-| ----- | ---- | ---------------- | ----------------------- |
-| like  | bool | 是否UP主觉得很赞 | false：否<br />true：是 |
-| reply | bool | 是否被UP主回复   | false：否<br />true：是 |

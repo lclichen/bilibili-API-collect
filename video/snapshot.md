@@ -6,6 +6,16 @@
 
 截取时间表的时间和快照一一对应，并按照从左到右 从上到下的顺序排布
 
+---
+
+- [获取视频快照（web端）](#获取视频快照（web端）)
+- [获取视频快照（APP端）](#获取视频快照（APP端）)
+- [获取视频快照（web端）（用于封面预览）](#获取视频快照（web端）（用于封面预览）)
+- [图片拼版](#图片拼版)
+- [bin格式截取时间表](#bin格式截取时间表)
+
+---
+
 ## 获取视频快照（web端）
 > http://api.bilibili.com/x/player/videoshot
 
@@ -15,8 +25,8 @@
 
 | 参数名 | 类型 | 内容               | 必要性       | 备注                                |
 | ------ | ---- | ------------------ | ------------ | ----------------------------------- |
-| aid    | num  | 视频avID           | 必要（可选） | avID与bvID任选一个                  |
-| bvid   | str  | 视频bvID           | 必要（可选） | avID与bvID任选一个                  |
+| aid    | num  | 稿件avID           | 必要（可选） | avID与bvID任选一个                  |
+| bvid   | str  | 稿件bvID           | 必要（可选） | avID与bvID任选一个                  |
 | cid    | num  | 分P CID            | 非必要       | 默认为1P                            |
 | index  | num  | json数组截取时间表 | 非必要       | 1：需要<br />0：不需要<br />默认为0 |
 
@@ -67,18 +77,21 @@
 avID方式：
 
 ```shell
-curl -G 'http://api.bilibili.com/x/player/videoshot'\
---data-urlencode 'aid=26273789'\
+curl -G 'http://api.bilibili.com/x/player/videoshot' \
+--data-urlencode 'aid=26273789' \
 --data-urlencode 'index=1'
 ```
 
 bvID方式：
 
 ```shell
-curl -G 'http://api.bilibili.com/x/player/videoshot'\
---data-urlencode 'bvid=BV1os411H7wm'\
+curl -G 'http://api.bilibili.com/x/player/videoshot' \
+--data-urlencode 'bvid=BV1os411H7wm' \
 --data-urlencode 'index=1'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -97,6 +110,8 @@ curl -G 'http://api.bilibili.com/x/player/videoshot'\
 }
 ```
 
+</details>
+
 ## 获取视频快照（APP端）
 
 > http://app.bilibili.com/x/v2/view/video/shot 
@@ -110,7 +125,7 @@ curl -G 'http://api.bilibili.com/x/player/videoshot'\
 | 参数名 | 类型 | 内容       | 必要性      | 备注 |
 | ------ | ---- | ---------- | ----------- | ---- |
 | appkey | str  | APP密钥    | APP方式必要 |      |
-| aid    | num  | 视频avID   | 必要        |      |
+| aid    | num  | 稿件avID   | 必要        |      |
 | cid    | num  | 分P CID    | 必要        |      |
 | ts     | num  | 当前时间戳 | APP方式必要 |      |
 | sign   | str  | APP签名    | APP方式必要 |      |
@@ -150,13 +165,16 @@ curl -G 'http://api.bilibili.com/x/player/videoshot'\
 获取视频`av26273789`（`CID=49075258`）的快照
 
 ```shell
-curl -G 'http://app.bilibili.com/x/v2/view/video/shot'\
---data-urlencode 'appkey=1d8b6e7d45233436'\
---data-urlencode 'aid=26273789'\
---data-urlencode 'cid=49075258'\
---data-urlencode 'ts=0'\
+curl -G 'http://app.bilibili.com/x/v2/view/video/shot' \
+--data-urlencode 'appkey=1d8b6e7d45233436' \
+--data-urlencode 'aid=26273789' \
+--data-urlencode 'cid=49075258' \
+--data-urlencode 'ts=0' \
 --data-urlencode 'sign=06c0a4f2ede21984313552bd9439db18'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -177,6 +195,8 @@ curl -G 'http://app.bilibili.com/x/v2/view/video/shot'\
 }
 ```
 
+</details>
+
 ## 获取视频快照（web端）（用于封面预览）
 
 > http://api.bilibili.com/pvideo
@@ -189,7 +209,7 @@ curl -G 'http://app.bilibili.com/x/v2/view/video/shot'\
 
 | 参数名 | 类型 | 内容     | 必要性 | 备注 |
 | ------ | ---- | -------- | ------ | ---- |
-| aid    | num  | 视频avID | 必要   |      |
+| aid    | num  | 稿件avID | 必要   |      |
 
 **json回复：**
 
@@ -236,9 +256,12 @@ curl -G 'http://app.bilibili.com/x/v2/view/video/shot'\
 获取视频`av26273789`的快照
 
 ```shell
-curl -G 'http://api.bilibili.com/pvideo'\
+curl -G 'http://api.bilibili.com/pvideo' \
 --data-urlencode 'aid=26273789'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -257,7 +280,7 @@ curl -G 'http://api.bilibili.com/pvideo'\
 }
 ```
 
-
+</details>
 
 ## 图片拼版
 
@@ -304,4 +327,3 @@ hex内容如下：
 00000150  05 1a 05 23 05 29 05 30  05 3c 05 43 05 4a 05 51  |...#.).0.<.C.J.Q|
 00000160  05 56 05 5b 05 67 05 6e  05 74 05 7b 05 87        |.V.[.g.n.t.{..|
 ```
-

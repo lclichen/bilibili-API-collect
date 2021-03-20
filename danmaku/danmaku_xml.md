@@ -1,6 +1,14 @@
 # xml弹幕
 
-实时弹幕池容量有限（根据视频类型500-3000条不等），占满后再发送会使实时弹幕池底部的弹幕压入历史弹幕池（类似于堆栈）
+实时弹幕池容量有限（根据视频类型500-8000条不等），占满后再发送会使实时弹幕池底部的弹幕压入历史弹幕池（类似于堆栈）
+
+---
+
+- [获取实时弹幕1](#获取实时弹幕1)
+- [获取实时弹幕2](#获取实时弹幕2)
+- [弹幕格式](#弹幕格式)
+
+---
 
 ## 获取实时弹幕1
 
@@ -19,8 +27,8 @@
 **示例：**
 
 ```shell
-curl -G 'http://api.bilibili.com/x/v1/dm/list.so'\
---data-urlencode 'oid=144541892'\
+curl -G 'http://api.bilibili.com/x/v1/dm/list.so' \
+--data-urlencode 'oid=144541892' \
 --compressed -o 'danmaku.xml'
 ```
 
@@ -34,7 +42,7 @@ curl -G 'http://api.bilibili.com/x/v1/dm/list.so'\
 
 **使用deflate压缩，注意解码**
 
-**url：**
+**url路径：**
 
 | 参数名 | 类型 | 内容    | 必要性 | 备注 |
 | ------ | ---- | ------- | ------ | ---- |
@@ -46,6 +54,11 @@ curl -G 'http://api.bilibili.com/x/v1/dm/list.so'\
 curl 'http://comment.bilibili.com/144541892.xml'
 --compressed -o 'danmaku.xml'
 ```
+
+**xml回复：**
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -76,7 +89,7 @@ curl 'http://comment.bilibili.com/144541892.xml'
 <i>
 ```
 
-
+</details>
 
 ## 弹幕格式
 
@@ -137,4 +150,3 @@ curl 'http://comment.bilibili.com/144541892.xml'
 | <font color="#222222">黑色</font> | <font color="#222222">222222</font> | <font color="#222222">2236962</font>  |
 | <font color="#9B9B9B">灰色</font> | <font color="#9B9B9B">9B9B9B</font> | <font color="#9B9B9B">10197915</font> |
 | <font color="#FFFFFF">白色</font> | <font color="#FFFFFF">FFFFFF</font> | <font color="#FFFFFF">16777215</font> |
-

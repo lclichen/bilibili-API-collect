@@ -1,15 +1,25 @@
 # 用户状态数
 
+- [关系状态数](#关系状态数)
+- [UP主状态数](#UP主状态数)
+- [~~订阅&投稿状态数（已弃用）~~](#~~订阅&投稿状态数（已弃用）~~)
+- [相簿投稿数](#相簿投稿数)
+
+---
+
 ## 关系状态数
 > http://api.bilibili.com/x/relation/stat
 
 *请求方式：GET*
 
+认证方式：Cookie（SESSDATA）或APP
+
 **url参数：**
 
-| 参数名 | 类型 | 内容        | 必要性 | 备注 |
-| ------ | ---- | ----------- | ------ | ---- |
-| vmid   | num  | 目标用户UID | 必要   |      |
+| 参数名     | 类型 | 内容         | 必要性      | 备注 |
+| ---------- | ---- | ------------ | ----------- | ---- |
+| access_key | str  | APP登录Token | APP方式必要 |      |
+| vmid       | num  | 目标用户UID  | 必要        |      |
 
 **json回复：**
 
@@ -24,23 +34,26 @@
 
 `data`对象：
 
-| 字段      | 类型 | 内容        | 备注                                                 |
-| --------- | ---- | ----------- | ---------------------------------------------------- |
-| mid       | num  | 目标用户UID |                                                      |
-| following | num  | 关注数      |                                                      |
-| whisper   | num  | 悄悄关注数  | 需要登录(SESSDATA) <br />只能查看自己的<br />默认为0 |
-| black     | num  | 黑名单数    | 需要登录(SESSDATA) <br />只能查看自己的<br />默认为0 |
-| follower  | num  | 粉丝数      |                                                      |
+| 字段      | 类型 | 内容        | 备注                                             |
+| --------- | ---- | ----------- | ------------------------------------------------ |
+| mid       | num  | 目标用户UID |                                                  |
+| following | num  | 关注数      |                                                  |
+| whisper   | num  | 悄悄关注数  | 需要登录(Cooklie或APP) <br />未登录或非自己恒为0 |
+| black     | num  | 黑名单数    | 需要登录(Cooklie或APP) <br />未登录或非自己恒为0 |
+| follower  | num  | 粉丝数      |                                                  |
 
 **示例：**
 
 查询用户`UID=332704117`的关系状态数
 
 ```shell
-curl -G 'http://api.bilibili.com/x/relation/stat'\
---data-urlencode 'vmid=332704117'\
+curl -G 'http://api.bilibili.com/x/relation/stat' \
+--data-urlencode 'vmid=332704117' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -57,17 +70,24 @@ curl -G 'http://api.bilibili.com/x/relation/stat'\
 }
 ```
 
+</details>
+
 ## UP主状态数
 
 > http://api.bilibili.com/x/space/upstat
 
 *请求方式：GET*
 
+认证方式：Cookie（SESSDATA）或APP
+
+注：该接口需要**任意用户**登录，否则**不会返回任何数据**
+
 **url参数：**
 
-| 参数名 | 类型 | 内容        | 必要性 | 备注 |
-| ------ | ---- | ----------- | ------ | ---- |
-| mid    | num  | 目标用户UID | 必要   |      |
+| 参数名     | 类型 | 内容         | 必要性      | 备注 |
+| ---------- | ---- | ------------ | ----------- | ---- |
+| access_key | str  | APP登录Token | APP方式必要 |      |
+| mid        | num  | 目标用户UID  | 必要        |      |
 
 **json回复：**
 
@@ -105,9 +125,13 @@ curl -G 'http://api.bilibili.com/x/relation/stat'\
 查询用户`UID=456664753`的UP主状态数
 
 ```shell
-curl -G 'http://api.bilibili.com/x/space/upstat'\
---data-urlencode 'mid=456664753'
+curl -G 'http://api.bilibili.com/x/space/upstat' \
+--data-urlencode 'mid=456664753' \
+-b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -126,8 +150,12 @@ curl -G 'http://api.bilibili.com/x/space/upstat'\
 }
 ```
 
-## 订阅&投稿状态数
+</details>
 
+## ~~订阅&投稿状态数（已弃用）~~
+
+<details>
+<summary>查看折叠内容</summary>
 > http://api.bilibili.com/x/space/navnum
 
 *请求方式：GET*
@@ -184,10 +212,13 @@ curl -G 'http://api.bilibili.com/x/space/upstat'\
 查询用户`UID=239202390`的订阅&投稿状态数
 
 ```shell
-curl -G 'http://api.bilibili.com/x/space/navnum'\
---data-urlencode 'mid=239202390'\
+curl -G 'http://api.bilibili.com/x/space/navnum' \
+--data-urlencode 'mid=239202390' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -216,7 +247,10 @@ curl -G 'http://api.bilibili.com/x/space/navnum'\
 }
 ```
 
-## 投稿相簿数
+</details>
+</details>
+
+## 相簿投稿数
 
 > http://api.vc.bilibili.com/link_draw/v1/doc/upload_count
 
@@ -253,9 +287,12 @@ curl -G 'http://api.bilibili.com/x/space/navnum'\
  查询用户`UID=53456`的投稿相簿数
 
 ```shell
-curl -G 'http://api.vc.bilibili.com/link_draw/v1/doc/upload_count'\
+curl -G 'http://api.vc.bilibili.com/link_draw/v1/doc/upload_count' \
 --data-urlencode 'uid=53456'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -271,3 +308,4 @@ curl -G 'http://api.vc.bilibili.com/link_draw/v1/doc/upload_count'\
 }
 ```
 
+</details>

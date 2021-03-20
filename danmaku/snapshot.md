@@ -1,6 +1,10 @@
 #  弹幕快照
 
-# 获取弹幕快照
+- [获取弹幕快照](#获取弹幕快照)
+
+---
+
+## 获取弹幕快照
 
 > http://api.bilibili.com/x/v2/dm/ajax
 
@@ -12,7 +16,7 @@
 
 | 参数名 | 类型     | 内容               | 必要性 | 备注 |
 | ------ | -------- | ------------------ | ------ | ---- |
-| aid    | num或str | 视频avID或视频bvID | 必要   |      |
+| aid    | num或str | 稿件avID或稿件bvID | 必要   |      |
 
 **json回复：**
 
@@ -41,16 +45,19 @@
 avID方式：
 
 ```shell
-curl -G 'http://api.bilibili.com/x/v2/dm/ajax'\
+curl -G 'http://api.bilibili.com/x/v2/dm/ajax' \
 --data-urlencode 'aid=43337021'
 ```
 
 bvID方式：
 
 ```shell
-curl -G 'http://api.bilibili.com/x/v2/dm/ajax'\
+curl -G 'http://api.bilibili.com/x/v2/dm/ajax' \
 --data-urlencode 'aid=BV1rb411m7gE'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -82,3 +89,4 @@ curl -G 'http://api.bilibili.com/x/v2/dm/ajax'\
 }
 ```
 
+</details>

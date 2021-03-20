@@ -1,5 +1,10 @@
 # 默认搜索&热搜
 
+- [获取默认搜索内容（web端）](#获取默认搜索内容（web端）)
+- [获取热搜列表（web端）](#获取热搜列表（web端）)
+
+---
+
 ## 获取默认搜索内容（web端）
 
 > http://api.bilibili.com/x/web-interface/search/default
@@ -29,7 +34,7 @@
 | show_name  | str  | 显示文字        |                |
 | name       | str  | 空              |                |
 | goto_type  | num  | 跳转类型        | 1：视频        |
-| goto_value | str  | 搜索目标ID      | 视频：视频avID |
+| goto_value | str  | 搜索目标ID      | 视频：稿件avID |
 | url        | str  | 搜索目标跳转url |                |
 
 **示例：**
@@ -37,6 +42,9 @@
 ```shell
 curl 'http://api.bilibili.com/x/web-interface/search/default'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -56,6 +64,8 @@ curl 'http://api.bilibili.com/x/web-interface/search/default'
 }
 ```
 
+</details>
+
 ## 获取热搜列表（web端）
 
 > http://s.search.bilibili.com/main/hotword
@@ -63,6 +73,8 @@ curl 'http://api.bilibili.com/x/web-interface/search/default'
 *请求方式：GET*
 
 榜单每隔固定时间统计一次，请求后返回搜索前20的关键词
+
+带有转义
 
 **json回复：**
 
@@ -105,6 +117,9 @@ curl 'http://api.bilibili.com/x/web-interface/search/default'
 ```shell
 curl 'http://s.search.bilibili.com/main/hotword'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -347,3 +362,4 @@ curl 'http://s.search.bilibili.com/main/hotword'
 }
 ```
 
+</details>

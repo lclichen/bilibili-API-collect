@@ -1,6 +1,14 @@
 # 稍后再看
 
-<img src="/imgs/toview.png" width="25" height="25"/>
+<img src="/imgs/toview.png" width="25" height="20"/>
+
+- [视频添加稍后再看](#视频添加稍后再看)
+- [添加频道中所有视频到稍后再看](#添加频道中所有视频到稍后再看)
+- [获取稍后再看视频列表](#获取稍后再看视频列表)
+- [删除稍后再看视频](#删除稍后再看视频)
+- [清空稍后再看视频列表](#清空稍后再看视频列表)
+
+---
 
 ## 视频添加稍后再看
 
@@ -16,8 +24,8 @@
 
 | 参数名 | 类型 | 内容                     | 必要性       | 备注               |
 | ------ | ---- | ------------------------ | ------------ | ------------------ |
-| aid    | num  | 视频avID                 | 必要（可选） | avID与bvID任选一个 |
-| bvid   | str  | 视频bvID                 | 必要（可选） | avID与bvID任选一个 |
+| aid    | num  | 稿件avID                 | 必要（可选） | avID与bvID任选一个 |
+| bvid   | str  | 稿件bvID                 | 必要（可选） | avID与bvID任选一个 |
 | csrf   | str  | CSRF Token（位于cookie） | 必要         |                    |
 
 **json回复：**
@@ -37,20 +45,23 @@
 avID方式：
 
 ```shell
-curl 'http://api.bilibili.com/x/v2/history/toview/add'\
---data-urlencode 'aid=41687433'\
---data-urlencode 'csrf=xxx'\
+curl 'http://api.bilibili.com/x/v2/history/toview/add' \
+--data-urlencode 'aid=41687433' \
+--data-urlencode 'csrf=xxx' \
 -b 'SESSDATA=xxx'
 ```
 
 bvID方式：
 
 ```shell
-curl 'http://api.bilibili.com/x/v2/history/toview/add'\
---data-urlencode 'bvid=BV1ht41147kj'\
---data-urlencode 'csrf=xxx'\
+curl 'http://api.bilibili.com/x/v2/history/toview/add' \
+--data-urlencode 'bvid=BV1ht41147kj' \
+--data-urlencode 'csrf=xxx' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -59,6 +70,8 @@ curl 'http://api.bilibili.com/x/v2/history/toview/add'\
     "ttl": 1
 }
 ```
+
+</details>
 
 ## 添加频道中所有视频到稍后再看
 
@@ -96,13 +109,16 @@ curl 'http://api.bilibili.com/x/v2/history/toview/add'\
 添加用户`UID=282994`下的频道`4693`中所有视频到稍后再看
 
 ```shell
-curl 'http://space.bilibili.com/ajax/channel/addAllToView'\
---data-urlencode 'cid=4693'\
---data-urlencode 'mid=282994'\
---data-urlencode 'csrf=xxx'\
+curl 'http://space.bilibili.com/ajax/channel/addAllToView' \
+--data-urlencode 'cid=4693' \
+--data-urlencode 'mid=282994' \
+--data-urlencode 'csrf=xxx' \
 -b 'SESSDATA=xxx;DedeUserID=1;DedeUserID__ckMd5=1;'
 -e 'https://www.bilibili.com'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -110,6 +126,8 @@ curl 'http://space.bilibili.com/ajax/channel/addAllToView'\
     "data": "操作成功"
 }
 ```
+
+</details>
 
 ## 获取稍后再看视频列表
 
@@ -148,103 +166,43 @@ curl 'http://space.bilibili.com/ajax/channel/addAllToView'\
 
 `data`中的`list`数组中的对象：
 
-| 字段      | 类型 | 内容                           | 备注                 |
-| --------- | ---- | ------------------------------ | -------------------- |
-| aid       | num  | 视频avID                       |                      |
-| videos    | num  | 视频分P总数                    | 默认为1              |
-| tid       | num  | 分区ID                         |                      |
-| tname     | str  | 子分区名称                     |                      |
-| copyright | num  | 版权标志                       | 1：自制<br />2：转载 |
-| pic       | str  | 视频封面图片url                |                      |
-| title     | str  | 视频标题                       |                      |
-| pubdate   | num  | 视频上传时间                   | 时间戳               |
-| ctime     | num  | 视频审核通过时间               | 时间戳               |
-| desc      | str  | 视频简介                       |                      |
-| state     | num  | 0                              | 作用尚不明确         |
-| attribute | num  | ？？？                         | 作用尚不明确         |
-| duration  | num  | 视频总计持续时长（所有分P）    | 单位为秒             |
-| rights    | obj  | 视频属性标志                   |                      |
-| owner     | obj  | 视频UP主信息                   |                      |
-| stat      | obj  | 视频状态数                     |                      |
-| dynamic   | str  | 视频同步发布的的动态的文字内容 | 无为空               |
-| dimension | obj  | 视频1P分辨率                   |                      |
-| count     | num  | 分P数                          | 非投稿视频无此项     |
-| cid       | num  | 视频CID                        |                      |
-| progress  | num  | 观看进度时间                   | 单位为秒             |
-| add_at    | num  | 添加时间                       | 时间戳               |
-| bvid      | str  | 视频bvID                       |                      |
-
-`data`中的`list`数组中的对象中的`rights`对象：
-
-| 字段            | 类型 | 内容             | 备注                                     |
-| --------------- | ---- | ---------------- | ---------------------------------------- |
-| bp              | num  | 0                | 作用尚不明确                             |
-| elec            | num  | 0                | 作用尚不明确                             |
-| download        | num  | 允许下载标志     | 0：不允许<br />1：允许                   |
-| movie           | num  | 视频时电影标志   | 0：否<br />1：是                         |
-| pay             | num  | 仅会员可观看标志 | 0：无<br />1：有                         |
-| hd5             | num  | 有高码率标志     | 0：无<br />1：有                         |
-| no_reprint      | num  | 禁止转载标志     | 0：无<br />1：禁止                       |
-| autoplay        | num  | 可自动播放标志   | 0：无<br />1：有  区别影视番剧与普通视频 |
-| ugc_pay         | num  | 0                | 作用尚不明确                             |
-| is_cooperation  | num  | 视频合作标志     | 0：无<br />1：是                         |
-| ugc_pay_preview | num  | 0                | 作用尚不明确                             |
-| no_background   | num  | 0                | 作用尚不明确                             |
-
-`data`中的`list`数组中的对象中的`owner`对象：
-
-| 字段 | 类型 | 内容     | 备注 |
-| ---- | ---- | -------- | ---- |
-| mid  | num  | UP主UID  |      |
-| name | str  | UP主昵称 |      |
-| face | str  | UP主头像 |      |
-
-`data`中的`list`数组中的对象中的`stat`对象：
-
-| 字段       | 类型 | 内容                           | 备注         |
-| ---------- | ---- | ------------------------------ | ------------ |
-| aid        | num  | 视频avID                       |              |
-| view       | num  | 普通：观看次数<br />屏蔽时：-1 |              |
-| danmaku    | num  | 弹幕条数                       |              |
-| reply      | num  | 评论条数                       |              |
-| favorite   | num  | 收藏人数                       |              |
-| coin       | num  | 投币枚数                       |              |
-| share      | num  | 分享次数                       |              |
-| now_rank   | num  | 0                              | 作用尚不明确 |
-| his_rank   | num  | 历史最高排行                   |              |
-| like       | num  | 获赞次数                       |              |
-| dislike    | num  | 0                              | 作用尚不明确 |
-| evaluation | str  | 视频评分                       | 默认为空     |
-
-`data`中的`list`数组中的对象中的`pages`对象：
-
-| 字段      | 类型 | 内容            | 备注                                 |
-| --------- | ---- | --------------- | ------------------------------------ |
-| cid       | num  | 当前分P CID     |                                      |
-| page      | num  | 当前分P         |                                      |
-| from      | str  | 视频来源        | vupload：用户上传<br />hunan：芒果TV |
-| part      | str  | 当前分P标题     |                                      |
-| duration  | num  | 当前分P持续时间 | 单位为秒                             |
-| vid       | str  | 空              | 作用尚不明确                         |
-| weblink   | str  | 空              | 作用尚不明确                         |
-| dimension | obj  | 当前分P分辨率   |                                      |
-
-`pages`中的`dimension`对象(同`data`中的`list`数组中的对象中的`dimension`对象)：
-
-| 字段   | 类型 | 内容           | 备注                 |
-| ------ | ---- | -------------- | -------------------- |
-| width  | num  | 当前分P 宽度   | 可能为0              |
-| height | num  | 当前分P 高度   | 可能为0              |
-| rotate | num  | 是否将宽高对换 | 0：正常<br />1：对换 |
+| 字段                            | 类型    | 内容                           | 备注                                                         |
+| ------------------------------- | ------- | ------------------------------ | ------------------------------------------------------------ |
+| aid                             | num     | 稿件avID                       |                                                              |
+| videos                          | num     | 稿件分P总数                    | 默认为1                                                      |
+| tid                             | num     | 分区tID                        |                                                              |
+| tname                           | str     | 子分区名称                     |                                                              |
+| copyright                       | num     | 是否转载                       | 1：原创<br />2：转载                                         |
+| pic                             | str     | 稿件封面图片url                |                                                              |
+| title                           | str     | 稿件标题                       |                                                              |
+| pubdate                         | num     | 稿件发布时间                   | 时间戳                                                       |
+| ctime                           | num     | 用户提交稿件的时间             | 时间戳                                                       |
+| desc                            | str     | 视频简介                       |                                                              |
+| state                           | num     | 视频状态                       | 略，见[获取视频详细信息（web端）](/video/info.md#获取视频详细信息（web端）)中的`state`备注 |
+| ~~attribute~~（仅做历史性保留） | ~~num~~ | ~~稿件属性位配置~~             | 本字段已被删除~~略，见[获取视频详细信息（web端）](/video/info.md#获取视频详细信息（web端）)中的`attribute`备注~~ |
+| duration                        | num     | 稿件总时长（所有分P）          | 单位为秒                                                     |
+| rights                          | obj     | 稿件属性标志                   | 略，见[获取视频详细信息（web端）](/video/info.md#获取视频详细信息（web端）)中的`rights`对象 |
+| owner                           | obj     | 稿件UP主信息                   | 略，见[获取视频详细信息（web端）](/video/info.md#获取视频详细信息（web端）)中的`owner`对象 |
+| stat                            | obj     | 稿件状态数                     | 略，见[获取视频详细信息（web端）](/video/info.md#获取视频详细信息（web端）)中的`stat`对象 |
+| dynamic                         | str     | 视频同步发布的的动态的文字内容 | 无为空                                                       |
+| dimension                       | obj     | 稿件1P分辨率                   | 略，见[获取视频详细信息（web端）](/video/info.md#获取视频详细信息（web端）)中的`dimension`对象 |
+| count                           | num     | 稿件分P数                      | 非投稿视频无此项                                             |
+| cid                             | num     | 视频CID                        |                                                              |
+| progress                        | num     | 观看进度时间                   | 单位为秒                                                     |
+| add_at                          | num     | 添加时间                       | 时间戳                                                       |
+| bvid                            | str     | 稿件bvID                       |                                                              |
 
 **示例：**
 
 获取稍后再看视频列表
 
 ```shell
-curl 'http://api.bilibili.com/x/v2/history/toview'\
+curl 'http://api.bilibili.com/x/v2/history/toview' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
  "code": 0,
@@ -390,6 +348,8 @@ curl 'http://api.bilibili.com/x/v2/history/toview'\
 }
 ```
 
+</details>
+
 ## 删除稍后再看视频
 
 > http://api.bilibili.com/x/v2/history/toview/del
@@ -421,11 +381,14 @@ curl 'http://api.bilibili.com/x/v2/history/toview'\
 删除视频`av540580868`的稍后再看记录
 
 ```shell
-curl 'http://api.bilibili.com/x/v2/history/toview/del'\
---data-urlencode 'aid=540580868'\
---data-urlencode 'csrf=xxx'\
+curl 'http://api.bilibili.com/x/v2/history/toview/del' \
+--data-urlencode 'aid=540580868' \
+--data-urlencode 'csrf=xxx' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -434,15 +397,20 @@ curl 'http://api.bilibili.com/x/v2/history/toview/del'\
     "ttl": 1
 }
 ```
+
+</details>
 
 删除所有已观看的视频
 
 ```shell
-curl 'http://api.bilibili.com/x/v2/history/toview/del'\
---data-urlencode 'viewed=true'\
---data-urlencode 'csrf=xxx'\
+curl 'http://api.bilibili.com/x/v2/history/toview/del' \
+--data-urlencode 'viewed=true' \
+--data-urlencode 'csrf=xxx' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -451,6 +419,8 @@ curl 'http://api.bilibili.com/x/v2/history/toview/del'\
     "ttl": 1
 }
 ```
+
+</details>
 
 ## 清空稍后再看视频列表
 
@@ -481,10 +451,13 @@ curl 'http://api.bilibili.com/x/v2/history/toview/del'\
 清空稍后再看视频列表
 
 ```shell
-curl 'http://api.bilibili.com/x/v2/history/toview/clear'\
---data-urlencode 'csrf=xxx'\
+curl 'http://api.bilibili.com/x/v2/history/toview/clear' \
+--data-urlencode 'csrf=xxx' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -493,3 +466,5 @@ curl 'http://api.bilibili.com/x/v2/history/toview/clear'\
     "ttl": 1
 }
 ```
+
+</details>

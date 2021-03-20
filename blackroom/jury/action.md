@@ -1,6 +1,10 @@
 # 仲裁操作
 
-**本页所有操作均需登录（Cookie或APP）**
+- [申请加入风纪委员会](#申请加入风纪委员会)
+- [拉取新案件](#拉取新案件)
+- [进行仲裁投票](#进行仲裁投票)
+
+---
 
 ## 申请加入风纪委员会
 
@@ -38,17 +42,19 @@
 Cookie方式：
 
 ```shell
-curl 'http://api.bilibili.com/x/credit/jury/apply'\
---data-urlencode 'csrf=xxx'\
+curl 'http://api.bilibili.com/x/credit/jury/apply' \
+--data-urlencode 'csrf=xxx' \
 -b 'SESSDATA=xxx'
 ```
 
 APP方式：
 
 ```shell
-curl 'http://api.bilibili.com/x/credit/jury/apply'\
+curl 'http://api.bilibili.com/x/credit/jury/apply' \
 --data-urlencode 'access_key=xxx'
 ```
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -57,6 +63,8 @@ curl 'http://api.bilibili.com/x/credit/jury/apply'\
     "ttl": 1
 }
 ```
+
+</details>
 
 ## 拉取新案件
 
@@ -95,17 +103,20 @@ curl 'http://api.bilibili.com/x/credit/jury/apply'\
 Cookie方式：
 
 ```shell
-curl 'http://api.bilibili.com/x/credit/jury/caseObtain'\
---data-urlencode 'csrf=xxx'\
+curl 'http://api.bilibili.com/x/credit/jury/caseObtain' \
+--data-urlencode 'csrf=xxx' \
 -b 'SESSDATA=xxx'
 ```
 
 APP方式：
 
 ```shell
-curl 'http://api.bilibili.com/x/credit/jury/caseObtain'\
+curl 'http://api.bilibili.com/x/credit/jury/caseObtain' \
 --data-urlencode 'access_key=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -117,6 +128,8 @@ curl 'http://api.bilibili.com/x/credit/jury/caseObtain'\
     }
 }
 ```
+
+</details>
 
 ## 进行仲裁投票
 
@@ -131,7 +144,7 @@ curl 'http://api.bilibili.com/x/credit/jury/caseObtain'\
 | 参数名        | 类型 | 内容                     | 必要性         | 备注                                    |
 | ------------- | ---- | ------------------------ | -------------- | --------------------------------------- |
 | cid           | num  | 案件ID                   | 必要           |                                         |
-| vote          | num  | 投票类型                 | 必要           |                                         |
+| vote          | num  | 投票类型                 | 必要           | 见「[众裁信息](judgement_info.md)」中表 |
 | content       | str  | 理由                     | 非必要         | 见「[众裁信息](judgement_info.md)」中表 |
 | likes         | nums | 支持的观点               | 非必要         |                                         |
 | hates         | nums | 反对的观点               | 非必要         |                                         |
@@ -147,7 +160,7 @@ curl 'http://api.bilibili.com/x/credit/jury/caseObtain'\
 
 | 字段    | 类型 | 内容   | 备注                                                         |
 | ------- | ---- | ------ | ------------------------------------------------------------ |
-| code    | num  | 返回值 | 0：成功<br/>-101：未登录<br />-111：csrf 错误<br />25005：不是风纪委员<br />25009： 案件不存在<br/>25011：投票类型错误<br />25012：重复投票 |
+| code    | num  | 返回值 | 0：成功<br/>-101：未登录<br />-111：csrf 错误<br />-400：请求错误（投票类型错误）<br />25005：不是风纪委员<br />25009： 案件不存在<br/>25011：投票类型错误<br />25012：重复投票 |
 | message | str  | 信息   | 默认为0                                                      |
 | ttl     | num  | 1      | 作用尚不明确                                                 |
 
@@ -158,35 +171,38 @@ curl 'http://api.bilibili.com/x/credit/jury/caseObtain'\
 Cookie方式：
 
 ```shell
-curl 'http://api.bilibili.com/x/credit/jury/vote'\
---data-urlencode 'cid=2333'\
---data-urlencode 'vote=1'\
---data-urlencode 'content='\
---data-urlencode 'likes='\
---data-urlencode 'hates='\
---data-urlencode 'attr=1'\
---data-urlencode 'apply_type=0'\
---data-urlencode 'origin_reason='\
---data-urlencode 'apply_reason='\
---data-urlencode 'csrf=xxx'\
+curl 'http://api.bilibili.com/x/credit/jury/vote' \
+--data-urlencode 'cid=2333' \
+--data-urlencode 'vote=1' \
+--data-urlencode 'content=' \
+--data-urlencode 'likes=' \
+--data-urlencode 'hates=' \
+--data-urlencode 'attr=1' \
+--data-urlencode 'apply_type=0' \
+--data-urlencode 'origin_reason=' \
+--data-urlencode 'apply_reason=' \
+--data-urlencode 'csrf=xxx' \
 -b 'SESSDATA=xxx'
 ```
 
 APP方式：
 
 ```shell
-curl 'http://api.bilibili.com/x/credit/jury/vote'\
---data-urlencode 'access_key=xxx'\
---data-urlencode 'cid=2333'\
---data-urlencode 'vote=1'\
---data-urlencode 'content='\
---data-urlencode 'likes='\
---data-urlencode 'hates='\
---data-urlencode 'attr=1'\
---data-urlencode 'apply_type=0'\
---data-urlencode 'origin_reason='\
+curl 'http://api.bilibili.com/x/credit/jury/vote' \
+--data-urlencode 'access_key=xxx' \
+--data-urlencode 'cid=2333' \
+--data-urlencode 'vote=1' \
+--data-urlencode 'content=' \
+--data-urlencode 'likes=' \
+--data-urlencode 'hates=' \
+--data-urlencode 'attr=1' \
+--data-urlencode 'apply_type=0' \
+--data-urlencode 'origin_reason=' \
 --data-urlencode 'apply_reason='
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -196,3 +212,4 @@ curl 'http://api.bilibili.com/x/credit/jury/vote'\
 }
 ```
 
+</details>

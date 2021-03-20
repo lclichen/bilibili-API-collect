@@ -62,9 +62,12 @@
 当`platform`=`web`时，不显示节点ip
 
 ```shell
-curl -G 'http://api.bilibili.com/x/web-interface/broadcast/servers'\
+curl -G 'http://api.bilibili.com/x/web-interface/broadcast/servers' \
 --data-urlencode 'platform=web'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -89,12 +92,17 @@ curl -G 'http://api.bilibili.com/x/web-interface/broadcast/servers'\
 }
 ```
 
+</details>
+
 当`platform`=其他时，显示节点ip
 
 ```shell
-curl -G 'http://api.bilibili.com/x/web-interface/broadcast/servers'\
+curl -G 'http://api.bilibili.com/x/web-interface/broadcast/servers' \
 --data-urlencode 'platform=1'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -118,6 +126,8 @@ curl -G 'http://api.bilibili.com/x/web-interface/broadcast/servers'\
 	}
 }
 ```
+
+</details>
 
 ## 服务器数据包
 
@@ -154,13 +164,13 @@ curl -G 'http://api.bilibili.com/x/web-interface/broadcast/servers'\
 
 操作码：
 
-| 代码       | 含义       |
-| ---------- | ---------- |
-| 0x00000002 | 心跳包     |
-| 0x00000003 | 心跳包回复 |
-| 0x000003E8 | 普通包     |
-| 0x00000007 | 认证包     |
-| 0x00000008 | 认证包回复 |
+| 代码 | 含义     |
+| ---- | -------- |
+| 2    | 心跳     |
+| 3    | 心跳回复 |
+| 7    | 认证     |
+| 8    | 认证回复 |
+| 1000 | 实时弹幕 |
 
 **示例：**
 
@@ -170,6 +180,5 @@ curl -G 'http://api.bilibili.com/x/web-interface/broadcast/servers'\
 00000000  00 00 00 16 00 12 00 01  00 00 00 07 00 00 00 01  |................|
 00000010  00 00 74 65 73 74                                 |..test|
 ```
-
 
 

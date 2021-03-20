@@ -2,6 +2,12 @@
 
 <img src="/imgs/download.svg" width="100" height="100"/>
 
+- [获取音频流URL（无法获取付费音频）（web端）](#获取音频流URL（无法获取付费音频）（web端）)
+- [获取音频流URL（可获取付费音频）（双端）](#获取音频流URL（可获取付费音频）（双端）)
+- [音频流的获取](#音频流的获取)
+
+---
+
 音质`qn`参数：
 
 | 代码 | 含义                 |
@@ -62,9 +68,12 @@
 **示例：**
 
 ```shell
-curl -G 'http://www.bilibili.com/audio/music-service-c/web/url'\
+curl -G 'http://www.bilibili.com/audio/music-service-c/web/url' \
 --data-urlencode 'sid=sid=15664'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -86,6 +95,8 @@ curl -G 'http://www.bilibili.com/audio/music-service-c/web/url'\
     }
 }
 ```
+
+</details>
 
 ## 获取音频流URL（可获取付费音频）（双端）
 
@@ -170,11 +181,11 @@ Cookie方式：
 
 ```shell
 curl -G 'http://api.bilibili.com/audio/music-service-c/url
---data-urlencode 'songid=682118'\
---data-urlencode 'quality=3'\
---data-urlencode 'privilege=2'\
---data-urlencode 'platform=android'\
---data-urlencode 'mid=293793435'\
+--data-urlencode 'songid=682118' \
+--data-urlencode 'quality=3' \
+--data-urlencode 'privilege=2' \
+--data-urlencode 'platform=android' \
+--data-urlencode 'mid=293793435' \
 -b 'SESSDATA=xxx'
 ```
 
@@ -182,13 +193,16 @@ APP方式：
 
 ```shell
 curl -G 'http://api.bilibili.com/audio/music-service-c/url
---data-urlencode 'access_key=xxx'\
---data-urlencode 'songid=682118'\
---data-urlencode 'quality=3'\
---data-urlencode 'privilege=2'\
---data-urlencode 'platform=android'\
+--data-urlencode 'access_key=xxx' \
+--data-urlencode 'songid=682118' \
+--data-urlencode 'quality=3' \
+--data-urlencode 'privilege=2' \
+--data-urlencode 'platform=android' \
 --data-urlencode 'mid=293793435'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -248,18 +262,20 @@ curl -G 'http://api.bilibili.com/audio/music-service-c/url
 }
 ```
 
+</details>
+
 ## 音频流的获取
 
 将`data`.`cdns`.`[0]`或`data`.`cdns`.`[1]`中的内容作为url进行GET操作
 
 需要验证请求`user-agent` 不为空
 
-**user-agent错误的情况会返回403 Forbidden**故无法获取**
+**user-agent错误并且referer不在`*.bilibili.com`域名下的情况下会导致403 Forbidden，故无法获取**
 
 **以上述音频url为例：**
 
 ```shell
-wget 'https://upos-sz-mirrorkodo.bilivideo.com/ugaxcode/m190102ws2pzf6jitbem841vq2x0du5x-flac.flac?deadline=1595332269&gen=uga&os=kodobv&uparams=deadline,gen,os&upsig=ac2284d97a61ef8758681eccf621c56d'\
+wget 'https://upos-sz-mirrorkodo.bilivideo.com/ugaxcode/m190102ws2pzf6jitbem841vq2x0du5x-flac.flac?deadline=1595332269&gen=uga&os=kodobv&uparams=deadline,gen,os&upsig=ac2284d97a61ef8758681eccf621c56d' \
 -O 'Download_music.flac'
 ```
 

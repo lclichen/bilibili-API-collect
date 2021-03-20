@@ -1,5 +1,9 @@
 # 视频推荐
 
+- [获取单视频推荐列表（web端）](#获取单视频推荐列表（web端）)
+
+---
+
 ## 获取单视频推荐列表（web端）
 
 > http://api.bilibili.com/x/web-interface/archive/related
@@ -12,8 +16,8 @@
 
 | 参数名 | 类型 | 内容     | 必要性       | 备注               |
 | ------ | ---- | -------- | ------------ | ------------------ |
-| aid    | num  | 视频avID | 必要（可选） | avID与bvID任选一个 |
-| bvid   | str  | 视频bvID | 必要（可选） | avID与bvID任选一个 |
+| aid    | num  | 稿件avID | 必要（可选） | avID与bvID任选一个 |
+| bvid   | str  | 稿件bvID | 必要（可选） | avID与bvID任选一个 |
 
 **json回复：**
 
@@ -37,7 +41,7 @@
 
 `data`数组中的对象：
 
-基本同「[视频详细信息](info.md#视频详细信息)」中的data对象
+基本同「[获取视频详细信息（web端）](info.md#获取视频详细信息（web端）)」中的data对象
 
 **示例：**
 
@@ -46,16 +50,19 @@
 avID方式：
 
 ```shell
-curl -G 'http://api.bilibili.com/x/web-interface/archive/related'\
+curl -G 'http://api.bilibili.com/x/web-interface/archive/related' \
 --data-urlencode 'aid=7'
 ```
 
 bvID方式：
 
 ```shell
-curl -G 'http://api.bilibili.com/x/web-interface/archive/related'\
+curl -G 'http://api.bilibili.com/x/web-interface/archive/related' \
 --data-urlencode 'bvid=BV1xx411c7m9'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -284,3 +291,4 @@ curl -G 'http://api.bilibili.com/x/web-interface/archive/related'\
 }
 ```
 
+</details>

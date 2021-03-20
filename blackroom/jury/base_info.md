@@ -1,6 +1,10 @@
 # 风纪委员会用户基本信息
 
-**本页所有操作均需登录（Cookie或APP）**
+- [基本数据](#基本数据)
+- [统计信息](#统计信息)
+- [检查申请风纪委员会资格](#检查申请风纪委员会资格)
+
+---
 
 ## 基本数据
 
@@ -43,16 +47,19 @@
 Cookie方式：
 
 ```shell
-curl 'http://api.bilibili.com/x/credit/jury/jury'\
+curl 'http://api.bilibili.com/x/credit/jury/jury' \
 -b 'SESSDATA=xxx'
 ```
 
 APP方式：
 
 ```shell
-curl -G 'http://api.bilibili.com/x/credit/jury/jury'\
+curl -G 'http://api.bilibili.com/x/credit/jury/jury' \
 --data-urlencode 'access_key=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -69,6 +76,8 @@ curl -G 'http://api.bilibili.com/x/credit/jury/jury'\
     }
 }
 ```
+
+</details>
 
 ## 统计信息
 
@@ -129,16 +138,19 @@ curl -G 'http://api.bilibili.com/x/credit/jury/jury'\
 Cookie方式：
 
 ```shell
-curl 'http://api.bilibili.com/x/credit/jury/kpi'\
+curl 'http://api.bilibili.com/x/credit/jury/kpi' \
 -b 'SESSDATA=xxx'
 ```
 
 APP方式：
 
 ```shell
-curl -G 'http://api.bilibili.com/x/credit/jury/kpi'\
+curl -G 'http://api.bilibili.com/x/credit/jury/kpi' \
 --data-urlencode 'access_key=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -167,6 +179,8 @@ curl -G 'http://api.bilibili.com/x/credit/jury/kpi'\
     ]
 }
 ```
+
+</details>
 
 ## 检查申请风纪委员会资格
 
@@ -209,16 +223,19 @@ curl -G 'http://api.bilibili.com/x/credit/jury/kpi'\
 Cookie方式：
 
 ```shell
-curl 'http://api.bilibili.com/x/credit/jury/requirement'\
+curl 'http://api.bilibili.com/x/credit/jury/requirement' \
 -b 'SESSDATA=xxx'
 ```
 
 APP方式：
 
 ```shell
-curl -G 'http://api.bilibili.com/x/credit/jury/requirement'\
+curl -G 'http://api.bilibili.com/x/credit/jury/requirement' \
 --data-urlencode 'access_key=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -234,3 +251,4 @@ curl -G 'http://api.bilibili.com/x/credit/jury/requirement'\
 }
 ```
 
+</details>

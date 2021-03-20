@@ -1,6 +1,10 @@
 # 直播间管理
 
-**本页所有操作均需登录（Cookie）**
+- [更新直播间标题](#更新直播间标题)
+- [开始直播](#开始直播)
+- [关闭直播](#关闭直播)
+
+---
 
 ## 更新直播间标题
 
@@ -36,12 +40,15 @@
 修改直播间`10352053`标题为`测试`
 
 ```shell
-curl 'http://api.live.bilibili.com/room/v1/Room/update'\
---data-urlencode 'room_id=10352053'\
---data-urlencode 'title=测试'\
---data-urlencode 'csrf=xxx'\
+curl 'http://api.live.bilibili.com/room/v1/Room/update' \
+--data-urlencode 'room_id=10352053' \
+--data-urlencode 'title=测试' \
+--data-urlencode 'csrf=xxx' \
 -b 'SESSDATA=xxx;bili_jct=xx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -51,6 +58,8 @@ curl 'http://api.live.bilibili.com/room/v1/Room/update'\
     "data": []
 }
 ```
+
+</details>
 
 ## 开始直播
 
@@ -142,13 +151,16 @@ curl 'http://api.live.bilibili.com/room/v1/Room/update'\
 `"data"."rtmp"."code"`为推流参数
 
 ```shell
-curl 'http://api.live.bilibili.com/room/v1/Room/startLive'\
---data-urlencode 'room_id=10352053'\
---data-urlencode 'area_v2=27'\
---data-urlencode 'platform=pc'\
---data-urlencode 'csrf=xxx'\
+curl 'http://api.live.bilibili.com/room/v1/Room/startLive' \
+--data-urlencode 'room_id=10352053' \
+--data-urlencode 'area_v2=27' \
+--data-urlencode 'platform=pc' \
+--data-urlencode 'csrf=xxx' \
 -b 'SESSDATA=xxx;bili_jct=xx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -188,7 +200,7 @@ curl 'http://api.live.bilibili.com/room/v1/Room/startLive'\
 }
 ```
 
-
+</details>
 
 ## 关闭直播
 
@@ -230,11 +242,14 @@ curl 'http://api.live.bilibili.com/room/v1/Room/startLive'\
 关闭直播间`10352053`的直播
 
 ```shell
-curl 'http://api.live.bilibili.com/room/v1/Room/stopLive'\
---data-urlencode 'room_id=10352053'\
---data-urlencode 'csrf=xxx'\
+curl 'http://api.live.bilibili.com/room/v1/Room/stopLive' \
+--data-urlencode 'room_id=10352053' \
+--data-urlencode 'csrf=xxx' \
 -b 'SESSDATA=xxx;bili_jct=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -248,3 +263,4 @@ curl 'http://api.live.bilibili.com/room/v1/Room/stopLive'\
 }
 ```
 
+</details>

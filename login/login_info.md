@@ -1,8 +1,14 @@
 # 登录基本信息
 
-**本页所有操作均需登录（Cookie或APP）**
+- [导航栏用户信息](#导航栏用户信息)
+- [~~登录用户信息仅部分（已弃用）~~](#~~登录用户信息仅部分（已弃用）~~)
+- [登录用户信息（APP端）](#登录用户信息（APP端）)
+- [登录用户状态数（双端）](#登录用户状态数（双端）)
+- [获取硬币数](#获取硬币数)
 
-## 登录用户信息1（web端）
+---
+
+## 导航栏用户信息
 
 > http://api.bilibili.com/nav（带有转义）
 >
@@ -20,39 +26,39 @@
 | ------- | ---- | -------- | ----------------------------- |
 | code    | num  | 返回值   | 0：成功<br />-101：账号未登录 |
 | message | str  | 错误信息 | 默认为0                       |
-| ttl     | num  | 1        | **作用尚不明确**              |
+| ttl     | num  | 1        |                               |
 | data    | obj  | 信息本体 |                               |
 
 `data`对象：
 
-| 字段                 | 类型 | 内容             | 备注                            |
-| -------------------- | ---- | ---------------- | ------------------------------- |
-| isLogin              | bool | 是否已登录       | false：未登录<br />true：已登录 |
-| email_verified       | num  | 是否验证邮箱地址 | 0：未验证<br />1：已验证        |
-| face                 | str  | 用户头像url      |                                 |
-| level_info           | obj  | 等级信息         |                                 |
-| mid                  | num  | 用户UID          |                                 |
-| mobile_verified      | num  | 是否验证手机号   | 0：未验证<br />1：已验证        |
-| money                | num  | 拥有硬币数       |                                 |
-| moral                | num  | 当前节操值       | 上限70                          |
-| official             | obj  | 认证信息         |                                 |
-| officialVerify       | obj  | 认证信息2        |                                 |
-| pendant              | obj  | 头像框信息       |                                 |
-| scores               | num  | 0                | **作用尚不明确**                |
-| uname                | str  | 用户昵称         |                                 |
-| vipDueDate           | num  | 大会员到期时间   | 毫秒 时间戳                     |
-| vipStatus            | num  | 会员开通状态     | 0：无<br />1：有                |
-| vipType              | num  | 大会员类型       | 0：无<br />1：月度<br />2：年度 |
-| vip_pay_type         | num  | 会员开通状态     | 0：无<br />1：有                |
-| vip_theme_type       | num  | 0                | **作用尚不明确**                |
-| vip_label            | obj  | 大会员信息       |                                 |
-| vip_avatar_subscript | num  | 是否显示会员图标 | 0：不显示<br />1：显示          |
-| vip_nickname_color   | str  | 会员昵称颜色     | 颜色码                          |
-| wallet               | obj  | B币信息          |                                 |
-| has_shop             | bool | false            | **作用尚不明确**                |
-| shop_url             | str  | 空               | **作用尚不明确**                |
-| allowance_count      | num  | 0                | **作用尚不明确**                |
-| answer_status        | num  | 0                | **作用尚不明确**                |
+| 字段                 | 类型 | 内容             | 备注                                              |
+| -------------------- | ---- | ---------------- | ------------------------------------------------- |
+| isLogin              | bool | 是否已登录       | false：未登录<br />true：已登录                   |
+| email_verified       | num  | 是否验证邮箱地址 | 0：未验证<br />1：已验证                          |
+| face                 | str  | 用户头像url      |                                                   |
+| level_info           | obj  | 等级信息         |                                                   |
+| mid                  | num  | 用户UID          |                                                   |
+| mobile_verified      | num  | 是否验证手机号   | 0：未验证<br />1：已验证                          |
+| money                | num  | 拥有硬币数       |                                                   |
+| moral                | num  | 当前节操值       | 上限为70                                          |
+| official             | obj  | 认证信息         |                                                   |
+| officialVerify       | obj  | 认证信息2        |                                                   |
+| pendant              | obj  | 头像框信息       |                                                   |
+| scores               | num  | 0                | 作用尚不明确                                      |
+| uname                | str  | 用户昵称         |                                                   |
+| vipDueDate           | num  | 会员到期时间     | 毫秒 时间戳                                       |
+| vipStatus            | num  | 会员开通状态     | 0：无<br />1：有                                  |
+| vipType              | num  | 会员类型         | 0：无<br />1：月度大会员<br />2：年度及以上大会员 |
+| vip_pay_type         | num  | 会员开通状态     | 0：无<br />1：有                                  |
+| vip_theme_type       | num  | 0                | 作用尚不明确                                      |
+| vip_label            | obj  | 会员标签         |                                                   |
+| vip_avatar_subscript | num  | 是否显示会员图标 | 0：不显示<br />1：显示                            |
+| vip_nickname_color   | str  | 会员昵称颜色     | 颜色码                                            |
+| wallet               | obj  | B币钱包信息      |                                                   |
+| has_shop             | bool | 是否拥有推广商品 | false：无<br />true：有                           |
+| shop_url             | str  | 商品推广页面url  |                                                   |
+| allowance_count      | num  | 0                | 作用尚不明确                                      |
+| answer_status        | num  | 0                | 作用尚不明确                                      |
 
 `data`中的`level_info`对象：
 
@@ -61,7 +67,7 @@
 | current_level | num  | 当前等级                 |      |
 | current_min   | num  | 当前等级经验最低值       |      |
 | current_exp   | num  | 当前经验                 |      |
-| next_exp      | num  | 升级下一等级需达到的经验 |      |
+| next_exp      | 小于6级时：num<br />6级时：str | 升级下一等级需达到的经验 |当用户等级为Lv6时，值为`--`，代表无穷大 |
 
 `data`中的`official`对象：
 
@@ -81,36 +87,39 @@
 
 `data`中的`pendant`对象：
 
-| 字段   | 类型 | 内容        | 备注             |
-| ------ | ---- | ----------- | ---------------- |
-| pid    | num  | 挂件id      |                  |
-| name   | str  | 挂件名称    |                  |
-| image  | str  | 挂件图片url |                  |
-| expire | num  | 0           | **作用尚不明确** |
+| 字段   | 类型 | 内容        | 备注         |
+| ------ | ---- | ----------- | ------------ |
+| pid    | num  | 挂件id      |              |
+| name   | str  | 挂件名称    |              |
+| image  | str  | 挂件图片url |              |
+| expire | num  | 0           | 作用尚不明确 |
 
 `data`中的`vip_label`对象：
 
-| 字段        | 类型 | 内容         | 备注             |
-| ----------- | ---- | ------------ | ---------------- |
-| path        | str  | 空           | **作用尚不明确** |
-| text        | str  | 会员类型文字 |                  |
-| label_theme | str  | 会员类型     |                  |
+| 字段        | 类型 | 内容     | 备注                                                         |
+| ----------- | ---- | -------- | ------------------------------------------------------------ |
+| path        | str  | 空       | 作用尚不明确                                                 |
+| text        | str  | 会员名称 |                                                              |
+| label_theme | str  | 会员标签 | vip：大会员<br />annual_vip：年度大会员<br />ten_annual_vip：十年大会员<br />hundred_annual_vip：百年大会员 |
 
 `data`中的`wallet`对象：
 
-| 字段            | 类型 | 内容          | 备注             |
-| --------------- | ---- | ------------- | ---------------- |
-| mid             | num  | 登录用户UID   |                  |
-| bcoin_balance   | num  | 拥有B币数     |                  |
-| coupon_balance  | num  | 每月奖励B币数 |                  |
-| coupon_due_time | num  | 0             | **作用尚不明确** |
+| 字段            | 类型 | 内容          | 备注         |
+| --------------- | ---- | ------------- | ------------ |
+| mid             | num  | 登录用户UID   |              |
+| bcoin_balance   | num  | 拥有B币数     |              |
+| coupon_balance  | num  | 每月奖励B币数 |              |
+| coupon_due_time | num  | 0             | 作用尚不明确 |
 
 **示例：**
 
 ```shell
-curl 'http://api.bilibili.com/nav'\
+curl 'http://api.bilibili.com/nav' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -176,7 +185,12 @@ curl 'http://api.bilibili.com/nav'\
 }
 ```
 
-## 登录用户信息2（web端）（仅部分）
+</details>
+
+## ~~登录用户信息仅部分（已弃用）~~
+
+<details>
+<summary>查看折叠内容</summary>
 
 > http://account.bilibili.com/home/userInfo
 
@@ -207,6 +221,7 @@ curl 'http://api.bilibili.com/nav'\
 | coins             | num  | 拥有硬币数        |                                 |
 | face              | str  | 登录用户头像url   |                                 |
 | nameplate_current | null | ???               | 作用尚不明确                    |
+| nameplate_current | str  | 登录用户勋章url   |                                 |
 | pendant_current   | str  | 登录用户头像框url |                                 |
 | uname             | str  | 登录用户昵称      |                                 |
 | userStatus        | str  | 登录用户状态      |                                 |
@@ -227,9 +242,12 @@ curl 'http://api.bilibili.com/nav'\
 **示例：**
 
 ```shell
-curl 'http://account.bilibili.com/home/userInfo'\
+curl 'http://account.bilibili.com/home/userInfo' \
 -b 'SESSDATA=xxx;DedeUserID=1;'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -256,6 +274,10 @@ curl 'http://account.bilibili.com/home/userInfo'\
 	}
 }
 ```
+
+</details>
+
+</details>
 
 ## 登录用户信息（APP端）
 
@@ -284,7 +306,7 @@ curl 'http://account.bilibili.com/home/userInfo'\
 | ------- | ---- | -------- | ------------------------------------------------------------ |
 | code    | num  | 返回值   | 0：成功<br />-3：API校验密匙错误<br />-101：账号未登录<br />-400：请求错误 |
 | message | str  | 错误信息 | 默认为0                                                      |
-| ttl     | num  | 1        | **作用尚不明确**                                             |
+| ttl     | num  | 1        |                                                              |
 | data    | obj  | 信息本体 |                                                              |
 
 `data`对象：
@@ -297,7 +319,7 @@ curl 'http://account.bilibili.com/home/userInfo'\
 | coins          | num  | 拥有硬币数       |                               |
 | birthday       | str  | 用户生日         | YYYY-MM-DD                    |
 | face           | str  | 用户头像url      |                               |
-| sex            | num  | 用户性别         | 1：男<br />2：女<br />3：私密 |
+| sex            | num  | 用户性别         | 0：私密<br />1：男<br />2：女 |
 | level          | num  | 用户等级         | 0-6                           |
 | rank           | num  | 1000             | **作用尚不明确**              |
 | silence        | num  | 用户是否被封禁   | 0：正常<br />1：封禁          |
@@ -350,12 +372,15 @@ curl 'http://account.bilibili.com/home/userInfo'\
 **示例：**
 
 ```shell
-curl -G 'http://app.bilibili.com/x/v2/account/myinfo'\
---data-urlencode 'access_key=xxx'\
---data-urlencode 'appkey=4409e2ce8ffd12b8'\
---data-urlencode 'ts=0'\
+curl -G 'http://app.bilibili.com/x/v2/account/myinfo' \
+--data-urlencode 'access_key=xxx' \
+--data-urlencode 'appkey=4409e2ce8ffd12b8' \
+--data-urlencode 'ts=0' \
 --data-urlencode 'sign=b8fb8480049c525994be6507a97ae0b6'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -406,6 +431,8 @@ curl -G 'http://app.bilibili.com/x/v2/account/myinfo'\
 }
 ```
 
+</details>
+
 
 ## 登录用户状态数（双端）
 
@@ -429,7 +456,7 @@ curl -G 'http://app.bilibili.com/x/v2/account/myinfo'\
 | ------- | ---- | -------- | ----------------------------- |
 | code    | num  | 返回值   | 0：成功<br />-101：账号未登录 |
 | message | str  | 错误信息 | 默认为0                       |
-| ttl     | num  | 1        | 作用尚不明确                  |
+| ttl     | num  | 1        |                               |
 | data    | obj  | 信息本体 |                               |
 
 | 字段          | 类型 | 内容       | 备注 |
@@ -445,9 +472,12 @@ curl -G 'http://app.bilibili.com/x/v2/account/myinfo'\
 Cookie方式：
 
 ```shell
-curl 'http://api.bilibili.com/x/web-interface/nav/stat'\
+curl 'http://api.bilibili.com/x/web-interface/nav/stat' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -461,13 +491,18 @@ curl 'http://api.bilibili.com/x/web-interface/nav/stat'\
     }
 }
 ```
+
+</details>
 
 APP方式：
 
 ```shell
-curl -G 'http://api.bilibili.com/x/web-interface/nav/stat'\
+curl -G 'http://api.bilibili.com/x/web-interface/nav/stat' \
 --data-urlencode 'access_key=d907f51122c59599d580ade2315af971'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -482,3 +517,53 @@ curl -G 'http://api.bilibili.com/x/web-interface/nav/stat'\
 }
 ```
 
+</details>
+
+## 获取硬币数
+
+>  http://account.bilibili.com/site/getCoin
+
+*请求方式：GET*
+
+认证方式：仅可Cookie（SESSDATA）
+
+鉴权方式：Cookie中` DedeUserID `存在且不为0
+
+**json回复：**
+
+根对象：
+
+| 字段   | 类型 | 内容     | 备注                          |
+| ------ | ---- | -------- | ----------------------------- |
+| code   | num  | 返回值   | 0：成功<br />-101：账号未登录 |
+| status | bool | true     | 作用尚不明确                  |
+| data   | obj  | 信息本体 |                               |
+
+`data`对象：
+
+| 字段  | 类型                                   | 内容       | 备注 |
+| ----- | -------------------------------------- | ---------- | ---- |
+| money | 硬币为正数时：num<br />硬币为0时：null | 当前硬币数 |      |
+
+**示例：**
+
+```shell
+curl 'http://account.bilibili.com/site/getCoin' \
+-b 'SESSDATA=xxx;DedeUserID=1;'
+```
+
+<details>
+<summary>查看响应示例：</summary>
+
+
+```json
+{
+    "code": 0,
+    "status": true,
+    "data": {
+        "money": 42.4
+    }
+}
+```
+
+</details>

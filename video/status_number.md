@@ -1,6 +1,11 @@
 # 视频状态数
 
-## 视频状态数1（仅avID）
+- [视频状态数（仅avID）](#视频状态数（仅avID）)
+- [视频状态数（bvID/avID）](#视频状态数（bvID/avID）)
+
+---
+
+## 视频状态数（仅avID）
 > http://api.bilibili.com/archive_stat/stat
 
 *请求方式：GET*
@@ -9,7 +14,7 @@
 
 | 参数名 | 类型 | 内容     | 必要性 | 备注 |
 | ------ | ---- | -------- | ------ | ---- |
-| aid    | num  | 视频avID | 必要   |      |
+| aid    | num  | 稿件avID | 必要   |      |
 
 **json回复：**
 
@@ -26,7 +31,7 @@
 
 | 字段       | 类型                     | 内容                           | 备注                 |
 | ---------- | ------------------------ | ------------------------------ | -------------------- |
-| aid        | num                      | 视频avID                       |                      |
+| aid        | num                      | 稿件avID                       |                      |
 | view       | 正常：num<br />屏蔽：str | 正常：播放次数<br />屏蔽："--" |                      |
 | danmaku    | num                      | 弹幕条数                       |                      |
 | reply      | num                      | 评论条数                       |                      |
@@ -47,9 +52,12 @@
 avID方式：
 
 ```shell
-curl -G 'http://api.bilibili.com/archive_stat/stat'\
+curl -G 'http://api.bilibili.com/archive_stat/stat' \
 --data-urlencode 'aid=91572143'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -74,7 +82,9 @@ curl -G 'http://api.bilibili.com/archive_stat/stat'\
 }
 ```
 
-## 视频状态数2（禁python）
+</details>
+
+## 视频状态数（bvID/avID）
 
 > http://api.bilibili.com/x/web-interface/archive/stat
 
@@ -86,8 +96,8 @@ curl -G 'http://api.bilibili.com/archive_stat/stat'\
 
 | 参数名 | 类型 | 内容     | 必要性       | 备注               |
 | ------ | ---- | -------- | ------------ | ------------------ |
-| aid    | num  | 视频avID | 必要（可选） | avID与bvID任选一个 |
-| bvid   | str  | 视频bvID | 必要（可选） | avID与bvID任选一个 |
+| aid    | num  | 稿件avID | 必要（可选） | avID与bvID任选一个 |
+| bvid   | str  | 稿件bvID | 必要（可选） | avID与bvID任选一个 |
 
 **json回复：**
 
@@ -104,8 +114,8 @@ curl -G 'http://api.bilibili.com/archive_stat/stat'\
 
 | 字段       | 类型                     | 内容                           | 备注                 |
 | ---------- | ------------------------ | ------------------------------ | -------------------- |
-| aid        | num                      | 视频avID                       |                      |
-| bvid       | str                      | 视频bvID                       |                      |
+| aid        | num                      | 稿件avID                       |                      |
+| bvid       | str                      | 稿件bvID                       |                      |
 | view       | 正常：num<br />屏蔽：str | 正常：播放次数<br />屏蔽："--" |                      |
 | danmaku    | num                      | 弹幕条数                       |                      |
 | reply      | num                      | 评论条数                       |                      |
@@ -128,16 +138,19 @@ curl -G 'http://api.bilibili.com/archive_stat/stat'\
 avID方式：
 
 ```shell
-curl -G 'http://api.bilibili.com/x/web-interface/archive/stat'\
+curl -G 'http://api.bilibili.com/x/web-interface/archive/stat' \
 --data-urlencode 'aid=2271112'
 ```
 
 bvID方式：
 
 ```shell
-curl -G 'http://api.bilibili.com/x/web-interface/archive/stat'\
+curl -G 'http://api.bilibili.com/x/web-interface/archive/stat' \
 --data-urlencode 'bvid=BV1es411D7sW'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -164,13 +177,18 @@ curl -G 'http://api.bilibili.com/x/web-interface/archive/stat'\
 }
 ```
 
+</details>
+
 当UA为`2333python2333`时，则无法访问此接口：
 
 ```shell
-curl -G 'http://api.bilibili.com/x/web-interface/archive/stat'\
---data-urlencode 'aid=2271112'\
+curl -G 'http://api.bilibili.com/x/web-interface/archive/stat' \
+--data-urlencode 'aid=2271112' \
 -A '2333python2333'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -181,3 +199,4 @@ curl -G 'http://api.bilibili.com/x/web-interface/archive/stat'\
 }
 ```
 
+</details>

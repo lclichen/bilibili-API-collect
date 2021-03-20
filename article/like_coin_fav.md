@@ -1,6 +1,10 @@
 # 专栏投币&点赞&收藏
 
-**本页所有操作均需登录（Cookie）**
+- [点赞文章](#点赞文章)
+- [投币文章](#投币文章)
+- [收藏文章](#收藏文章)
+
+---
 
 ## 点赞文章
 
@@ -35,12 +39,15 @@
 为文章`cv5806746`点赞
 
 ```shell
-curl 'http://api.bilibili.com/x/article/like'\
---data-urlencode 'id=5806746'\
---data-urlencode 'type=1'\
---data-urlencode 'csrf=xxx'\
+curl 'http://api.bilibili.com/x/article/like' \
+--data-urlencode 'id=5806746' \
+--data-urlencode 'type=1' \
+--data-urlencode 'csrf=xxx' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -49,6 +56,8 @@ curl 'http://api.bilibili.com/x/article/like'\
     "ttl": 1
 }
 ```
+
+</details>
 
 ## 投币文章
 
@@ -91,13 +100,16 @@ data 对象：
 为文章`cv5806746`投币1枚
 
 ```shell
-curl 'http://api.bilibili.com/x/web-interface/coin/add'\
---data-urlencode 'aid=5806746'\
---data-urlencode 'multiply=1'\
---data-urlencode 'avtype=2'\
---data-urlencode 'csrf=xxx'\
+curl 'http://api.bilibili.com/x/web-interface/coin/add' \
+--data-urlencode 'aid=5806746' \
+--data-urlencode 'multiply=1' \
+--data-urlencode 'avtype=2' \
+--data-urlencode 'csrf=xxx' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -109,6 +121,8 @@ curl 'http://api.bilibili.com/x/web-interface/coin/add'\
     }
 }
 ```
+
+</details>
 
 ## 收藏文章
 
@@ -142,11 +156,14 @@ curl 'http://api.bilibili.com/x/web-interface/coin/add'\
 收藏文章`cv5806746`
 
 ```shell
-curl 'http://api.bilibili.com/x/article/favorites/add'\
---data-urlencode 'id=5806746'\
---data-urlencode 'csrf=xxx'\
+curl 'http://api.bilibili.com/x/article/favorites/add' \
+--data-urlencode 'id=5806746' \
+--data-urlencode 'csrf=xxx' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -156,3 +173,4 @@ curl 'http://api.bilibili.com/x/article/favorites/add'\
 }
 ```
 
+</details>

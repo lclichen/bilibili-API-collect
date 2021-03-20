@@ -1,5 +1,10 @@
 # 课程基本信息
 
+- [获取课程基本信息](#获取课程基本信息)
+- [获取课程分集列表](#获取课程分集列表)
+
+---
+
 课程ssID与epID和番剧不互通
 
 课程avID与普通视频绝大部分api接口不能互通，少部分互通接口如下：
@@ -124,7 +129,7 @@
 
 | 字段           | 类型 | 内容             | 备注                                                         |
 | -------------- | ---- | ---------------- | ------------------------------------------------------------ |
-| aid            | num  | 课程分集avID     | **与普通视频avID部分不互通**                                 |
+| aid            | num  | 课程分集avID     | **与普通稿件avID部分不互通**                                 |
 | cid            | num  | 课程分集CID      | **与普通视频CID部分不互通**                                  |
 | duration       | num  | 课程分集时间长度 | 单位为秒                                                     |
 | from           | str  | pugv             |                                                              |
@@ -246,20 +251,23 @@
 ssID方式：
 
 ```shell
-curl -G 'http://api.bilibili.com/pugv/view/web/season'\
---data-urlencode 'season_id=61'\
--b 'SESSDATA=xxx'\
+curl -G 'http://api.bilibili.com/pugv/view/web/season' \
+--data-urlencode 'season_id=61' \
+-b 'SESSDATA=xxx' \
 -e 'https://www.bilibili.com'
 ```
 
 epID方式：
 
 ```shell
-curl -G 'http://api.bilibili.com/pugv/view/web/season'\
---data-urlencode 'ep_id=790'\
--b 'SESSDATA=xxx'\
+curl -G 'http://api.bilibili.com/pugv/view/web/season' \
+--data-urlencode 'ep_id=790' \
+-b 'SESSDATA=xxx' \
 -e 'https://www.bilibili.com'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -454,6 +462,8 @@ curl -G 'http://api.bilibili.com/pugv/view/web/season'\
 }
 ```
 
+</details>
+
 ## 获取课程分集列表
 
 > http://api.bilibili.com/pugv/view/web/ep/list 
@@ -501,7 +511,7 @@ curl -G 'http://api.bilibili.com/pugv/view/web/season'\
 
 | 字段           | 类型 | 内容             | 备注                                                         |
 | -------------- | ---- | ---------------- | ------------------------------------------------------------ |
-| aid            | num  | 课程分集avID     | **与普通视频avID部分不互通**                                 |
+| aid            | num  | 课程分集avID     | **与普通稿件avID部分不互通**                                 |
 | cid            | num  | 课程分集CID      | **与普通视频CID部分不互通**                                  |
 | duration       | num  | 课程分集时间长度 | 单位为秒                                                     |
 | from           | str  | pugv             |                                                              |
@@ -529,13 +539,16 @@ curl -G 'http://api.bilibili.com/pugv/view/web/season'\
 按照每页5项查询课程`ss61`的分集列表第1页
 
 ```shell
-curl -G 'http://api.bilibili.com/pugv/view/web/ep/list'\
---data-urlencode 'season_id=61'\
---data-urlencode 'ps=5 '\
---data-urlencode 'pn=1'\
--b 'SESSDATA=xxx'\
+curl -G 'http://api.bilibili.com/pugv/view/web/ep/list' \
+--data-urlencode 'season_id=61' \
+--data-urlencode 'ps=5 ' \
+--data-urlencode 'pn=1' \
+-b 'SESSDATA=xxx' \
 -e 'https://www.bilibili.com'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -629,3 +642,4 @@ curl -G 'http://api.bilibili.com/pugv/view/web/ep/list'\
 }
 ```
 
+</details>

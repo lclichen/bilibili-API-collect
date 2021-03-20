@@ -1,8 +1,12 @@
 # 微信&支付宝方式充电
 
-**本页所有操作均需登录（Cookie）**
-
 <img src="/imgs/battery-100.png" width="100" height="100"/>
+
+- [申请充电二维码及扫码秘钥](#申请充电二维码及扫码秘钥)
+
+- [检查扫码支付结果](#检查扫码支付结果)
+
+---
 
 操作流程：
 
@@ -32,7 +36,7 @@
 | up_mid              | num  | 充电对象用户UID          | 必要   |                                                              |
 | is_bp_remains_prior | bool | 是否优先扣除B币          | 必要   | true：是<br />false：否<br />在B币不足时剩余的部分利用支付平台支付 |
 | otype               | str  | 充电来源                 | 必要   | up：空间充电<br />archive：视频充电                          |
-| oid                 | num  | 充电来源代码             | 必要   | 空间充电：充电对象用户UID<br />视频充电：视频avID            |
+| oid                 | num  | 充电来源代码             | 必要   | 空间充电：充电对象用户UID<br />视频充电：稿件avID            |
 | csrf                | str  | CSRF Token（位于cookie） | 必要   |                                                              |
 
 **json回复：**
@@ -59,15 +63,18 @@
 申请空间的方式向用户23215368充电10电池且不使用B币的支付二维码
 
 ```shell
-curl 'http://api.bilibili.com/x/ugcpay/trade/elec/pay/qr_code/create'\
---data-urlencode 'elec_num=10'\
---data-urlencode 'up_mid=23215368'\
---data-urlencode 'is_bp_remains_prior=false'\
---data-urlencode 'otype=up'\
---data-urlencode 'oid=23215368'\
---data-urlencode 'csrf=xxx'\
+curl 'http://api.bilibili.com/x/ugcpay/trade/elec/pay/qr_code/create' \
+--data-urlencode 'elec_num=10' \
+--data-urlencode 'up_mid=23215368' \
+--data-urlencode 'is_bp_remains_prior=false' \
+--data-urlencode 'otype=up' \
+--data-urlencode 'oid=23215368' \
+--data-urlencode 'csrf=xxx' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -81,6 +88,8 @@ curl 'http://api.bilibili.com/x/ugcpay/trade/elec/pay/qr_code/create'\
 	}
 }
 ```
+
+</details>
 
 ## 检查扫码支付结果
 
@@ -121,10 +130,13 @@ curl 'http://api.bilibili.com/x/ugcpay/trade/elec/pay/qr_code/create'\
 当申请到的支付二维码未被扫描时，`data`.`ststus`的值为`2`
 
 ```shell
-curl -G 'http://api.bilibili.com/x/ugcpay/trade/elec/pay/order/status'\
---data-urlencode 'qr_token=c7cbdc47fc424cd18f2146db653597b8'\
+curl -G 'http://api.bilibili.com/x/ugcpay/trade/elec/pay/order/status' \
+--data-urlencode 'qr_token=c7cbdc47fc424cd18f2146db653597b8' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -139,13 +151,18 @@ curl -G 'http://api.bilibili.com/x/ugcpay/trade/elec/pay/order/status'\
 }
 ```
 
+</details>
+
 当申请到的支付二维码已扫描但未确认时，`data`.`ststus`的值为`3`
 
 ```shell
-curl -G 'http://api.bilibili.com/x/ugcpay/trade/elec/pay/order/status'\
---data-urlencode 'qr_token=c7cbdc47fc424cd18f2146db653597b8'\
+curl -G 'http://api.bilibili.com/x/ugcpay/trade/elec/pay/order/status' \
+--data-urlencode 'qr_token=c7cbdc47fc424cd18f2146db653597b8' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -160,13 +177,18 @@ curl -G 'http://api.bilibili.com/x/ugcpay/trade/elec/pay/order/status'\
 }
 ```
 
+</details>
+
 成功支付后，`data`.`ststus`的值为`1`，且`data`.`order_no`存在留言token
 
 ```shell
-curl -G 'http://api.bilibili.com/x/ugcpay/trade/elec/pay/order/status'\
---data-urlencode 'qr_token=c7cbdc47fc424cd18f2146db653597b8'\
+curl -G 'http://api.bilibili.com/x/ugcpay/trade/elec/pay/order/status' \
+--data-urlencode 'qr_token=c7cbdc47fc424cd18f2146db653597b8' \
 -b 'SESSDATA=xxx'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```json
 {
@@ -182,3 +204,4 @@ curl -G 'http://api.bilibili.com/x/ugcpay/trade/elec/pay/order/status'\
 }
 ```
 
+</details>

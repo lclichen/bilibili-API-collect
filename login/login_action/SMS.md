@@ -6,6 +6,14 @@ web端短信登录流程：
 2. 发送短信，使用国际地区代码`cid`+手机号码`tel`+登录密钥`key`+极验`challenge`+验证结果`validate`+验证结果`seccode`
 3. 提交短信验证码以验证登录操作，使用国际地区代码`cid`+手机号码`tel`+短信验证码`smsCode`
 
+---
+
+- [获取国际地区代码（web端）](#获取国际地区代码（web端）)
+- [发送短信验证码（web端）](#发送短信验证码（web端）)
+- [使用短信验证码登录（web端）](#使用短信验证码登录（web端）)
+
+---
+
 ## 获取国际地区代码（web端）
 
 > http://passport.bilibili.com/web/generic/country/list
@@ -50,6 +58,9 @@ web端短信登录流程：
 curl 'http://passport.bilibili.com/web/generic/country/list'
 ```
 
+<details>
+<summary>查看响应示例：</summary>
+
 ```json
 {
     "code": 0,
@@ -84,6 +95,8 @@ curl 'http://passport.bilibili.com/web/generic/country/list'
 }
 ```
 
+</details>
+
 ## 发送短信验证码（web端）
 
 > http://passport.bilibili.com/web/sms/general/v2/send
@@ -113,7 +126,7 @@ curl 'http://passport.bilibili.com/web/generic/country/list'
 
 | 字段   | 类型 | 内容     | 备注         |
 | ------ | ---- | -------- | --------- |
-| code | num | 返回值 | 0：成功<br />-400：请求错误<br />1002：手机号格式错误<br />1015：短信发送次数已达上限<br />1003：验证码已经发送<br />2400：登录秘钥错误<br />2406：验证极验服务出错 |
+| code | num | 返回值 | 0：成功<br />-400：请求错误<br />1002：手机号格式错误<br />86203：短信发送次数已达上限<br />1003：验证码已经发送<br />1025：该手机号在哔哩哔哩有过永久封禁记录，无法再次注册或绑定新账号<br />2400：登录秘钥错误<br />2406：验证极验服务出错 |
 | message | str | 错误信息 | 成功为"验证码短信已下发" |
 
 **示例：**
@@ -122,21 +135,27 @@ curl 'http://passport.bilibili.com/web/generic/country/list'
 
 ```shell
 curl 'http://passport.bilibili.com/web/sms/general/v2/send' \
---data-urlencode 'tel=13888888888'\
---data-urlencode 'cid=1'\
---data-urlencode 'type=21'\
---data-urlencode 'captchaType=6'\
---data-urlencode 'key=aabbccdd'\
---data-urlencode 'challenge=2333'\
---data-urlencode 'validate=666666'\
+--data-urlencode 'tel=13888888888' \
+--data-urlencode 'cid=1' \
+--data-urlencode 'type=21' \
+--data-urlencode 'captchaType=6' \
+--data-urlencode 'key=aabbccdd' \
+--data-urlencode 'challenge=2333' \
+--data-urlencode 'validate=666666' \
 --data-urlencode 'seccode=666666|jordan'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
+
 ```json
 {
   "code": 0,
   "message": "验证码短信已下发"
 }
 ```
+
+</details>
 
 ## 使用短信验证码登录（web端）
 
@@ -181,10 +200,14 @@ curl 'http://passport.bilibili.com/web/sms/general/v2/send' \
 
 ```shell
 curl 'https://passport.bilibili.com/web/login/rapid' 
---data-urlencode 'cid=1'\
---data-urlencode 'tel=13888888888'\
+--data-urlencode 'cid=1' \
+--data-urlencode 'tel=13888888888' \
 --data-urlencode 'smsCode=123456'
 ```
+
+<details>
+<summary>查看响应示例：</summary>
+
 ```json
 {
   "code": 0,
@@ -195,9 +218,15 @@ curl 'https://passport.bilibili.com/web/login/rapid'
   }
 }
 ```
+
+</details>
+
 **响应头部抓包信息：**
 
 可明显看见设置了几个cookie（填入浏览器即可成功登录）
+
+<details>
+<summary>查看响应示例：</summary>
 
 ```http
 HTTP/1.1 200 OK
@@ -215,3 +244,5 @@ Cache-Control: no-cache
 X-Cache-Webcdn: BYPASS from jd-sxhz-dx-w-01
 
 ```
+
+</details>
